@@ -10,6 +10,8 @@
 namespace App\BootStrap;
 
 use App\Constants\Services;
+use App\Controller\ControllerBase;
+use App\Controller\UsersController;
 use App\Mapper\BootstrapInterface;
 use Phalcon\Config;
 use Phalcon\Di\FactoryDefault;
@@ -17,6 +19,8 @@ use Phalcon\Events\Manager;
 use Phalcon\Mvc\Micro;
 use Phalcon\Mvc\Url as UrlResolver;
 use Phalcon\Mvc\View\Simple as View;
+use Phalcon\Annotations\Factory;
+use Phalcon\Annotations\Adapter\Memory as MemoryAdapter;
 
 class ServiceBootstrap implements BootstrapInterface
 {
@@ -27,6 +31,15 @@ class ServiceBootstrap implements BootstrapInterface
          * @description Config - \Phalcon\Config
          */
         $di->setShared(Services::CONFIG, $config);
+
+        /**
+         * 反射注册
+         */
+        $di->setShared(Services::ANNOTATIONS,function (Config $config){
+            $options = $config->get(Services::ANNOTATIONS);
+            $annotations = Factory::load($options);
+            return $annotations;
+        });
 
         /**
          * @description Phalcon - \Phalcon\Db\Adapter\Pdo\Mysql

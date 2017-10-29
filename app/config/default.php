@@ -15,9 +15,14 @@ return [
         'migrationsDir'  => APP_PATH . '/migrations/',
         'viewsDir'       => APP_PATH . '/views/',
         'baseUri'        => '/api.app/',
-        'authentication' => [
-            'secret' => 'L%JZZ#aJ%Ka#I3koe!jHxcXd@U',
-            'expirationTime' => 86400 * 7, // One week till token expires
-        ]
+    ],
+    'authentication' => [
+        'secret' => 'L%JZZ#aJ%Ka#I3koe!jHxcXd@U',
+        'expirationTime' => 86400 * 7, // One week till token expires
+    ],
+    'annotations'=>[
+        'prefix'   => 'annotations',
+        'lifetime' => '3600',
+        'adapter'  => 'memory',      // Load the Memory adapter
     ]
 ];
