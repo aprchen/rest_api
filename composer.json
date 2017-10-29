@@ -1,7 +1,29 @@
 {
-  "name": "application-name",
+  "name": "vhome.api",
+  "keywords":["RESTful", "rest", "api", "phalcon"],
+  "description":"phalcon 接口项目,设计思路部分参考自redound/phalcon-rest-boilerplate,其余请看phalcon官网",
+  "type": "project",
+  "license": "MIT",
+  "support": {
+    "source": "https://github.com/Succcc/vhome_api",
+    "issues": "https://github.com/Succcc/vhome_api/issues"
+  },
   "version": "0.0.1",
   "require-dev": {
     "phalcon/ide-stubs": "*"
-}
+  },
+  "authors": [
+    {
+      "name": "Succcc",
+      "email": "ott321@yeah.net"
+    },
+    {
+      "name": "Olivier Andriessen",
+      "email": "olivierandriessen@gmail.com"
+    },
+    {
+      "name": "Bart Blok",
+      "email": "bart@wittig.nl"
+    }
+  ]
 }
