@@ -10,7 +10,7 @@ use Phalcon\Mvc\Controller;
  * Time: 下午5:41
  * Hope deferred makes the heart sick,but desire fulfilled is a tree of life.
  */
-class ControllerBase extends EndPoint
+class ControllerBase extends Controller
 {
 
 }

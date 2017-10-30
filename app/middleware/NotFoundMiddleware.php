@@ -26,9 +26,7 @@ class NotFoundMiddleware implements MiddlewareInterface
     {
         $app->response->setStatusCode(404, 'Not Found');
         $app->response->sendHeaders();
-
-        $message = 'Nothing to see here. Move along....';
-        $app->response->setContent($message);
+        $app->response->redirect('error');
         $app->response->send();
         return false;
     }

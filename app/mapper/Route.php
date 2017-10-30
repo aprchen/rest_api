@@ -11,12 +11,14 @@ namespace App\Mapper;
 use App\Controller\TestController;
 use App\Controller\UsersController;
 
+/**
+ * Class Route
+ * @package App\Mapper
+ * @deprecated
+ */
 class Route
 {
-  public static function map(){
-      return [
-          UsersController::class,
-          TestController::class
-      ];
+  public function map(){
+
   }
 }

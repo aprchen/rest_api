@@ -14,7 +14,7 @@ return [
         'modelsDir'      => APP_PATH . '/models/',
         'migrationsDir'  => APP_PATH . '/migrations/',
         'viewsDir'       => APP_PATH . '/views/',
-        'baseUri'        => '/api.app/',
+        'baseUri'        => '/',
     ],
     'authentication' => [
         'secret' => 'L%JZZ#aJ%Ka#I3koe!jHxcXd@U',

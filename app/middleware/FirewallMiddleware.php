@@ -10,15 +10,17 @@
 namespace App\Middleware;
 
 
+use Phalcon\Annotations\Factory;
 use Phalcon\Config;
 use Phalcon\Events\Event;
+use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\Micro;
 use Phalcon\Mvc\Micro\MiddlewareInterface;
 
 class FirewallMiddleware implements MiddlewareInterface
 {
     /**
-     * Before anything happens
+     * controller 执行之前发生
      *
      * @param Event $event
      * @param Micro $app
@@ -26,16 +28,18 @@ class FirewallMiddleware implements MiddlewareInterface
      * @internal param Micro $application
      *
      */
-    public function beforeHandleRoute(Event $event, Micro $app)
+    public function beforeExecuteRoute(Event $event, Micro $app)
     {
         $whiteList = $app->getDI()->getConfig()->whiteList;
-
+        $controller = $app->getActiveHandler();
+        var_dump($controller);
+        exit();
         $ipAddress = $app->request->getClientAddress();
         if (true !== array_key_exists($ipAddress, $whiteList)) {
             $app->response->setStatusCode(401, 'Not ');
             $app->response->sendHeaders();
 
-            $message = "无法访问";
+            $message = "当前ip无法访问";
             $app->response->setContent($message);
             $app->response->send();
 

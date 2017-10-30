@@ -2,15 +2,16 @@
 /**
  * Created by PhpStorm.
  * User: sl
- * Date: 2017/10/29
- * Time: 下午9:44
+ * Date: 2017/10/30
+ * Time: 下午3:32
  * Hope deferred makes the heart sick,but desire fulfilled is a tree of life.
  */
 
 namespace App\Mvc;
 
 
-class EndPoint
+class EndPointException extends \Exception
 {
+
 
 }

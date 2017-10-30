@@ -49,4 +49,6 @@ class Services
     const URL_QUERY_PARSER = "urlQueryParser";
     const ERROR_HELPER = "errorHelper";
     const FORMAT_HELPER = "formatHelper";
+
+    const LAZY_LOAD = true;
 }

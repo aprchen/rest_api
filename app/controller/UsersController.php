@@ -11,16 +11,22 @@ namespace App\Controller;
 
 
 use App\Constants\ErrorCode;
-use App\Constants\Services;
-use Phalcon\Annotations\Adapter\Memory as MemoryAdapter;
-use Phalcon\Annotations\Factory;
-use Phalcon\Annotations\Reader;
-use Phalcon\Annotations\Reflection;
 
+
+/**
+ * Class UsersController
+ * @package App\Controller
+ * 用户端点
+ * @url_prefix(value = "/users")
+ */
 class UsersController extends ControllerBase
 {
     /**
-     * @GetMapping(path = "/users/get/{id}")
+     * @internal
+     * @api {get} /:id
+     * @apiPermission commonUsers
+     * @Mapping(path = "/{id}",method ="get")
+     * @ScopesCommonUsers "需要用户登录"
      */
     public function get($id){
         $res =["hello"];
@@ -28,10 +34,13 @@ class UsersController extends ControllerBase
     }
 
     /**
-     * @GetMapping(path = {"/error"})
+     * @Mapping(path = "/",method ="get")
+     * @ScopesPublic 公开
+     * @Firewall
      */
     public function error(){
-        throw new \Exception(ErrorCode::DATA_NOT_FOUND);
+        echo 11;
+        //throw new \Exception(ErrorCode::DATA_NOT_FOUND);
     }
 
 }
