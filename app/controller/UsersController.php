@@ -34,13 +34,12 @@ class UsersController extends ControllerBase
     }
 
     /**
-     * @Mapping(path = "/",method ="get")
+     * @Mapping(path = "/me")
      * @ScopesPublic 公开
-     * @Firewall
+     * @Firewall 用于限制Ip
      */
-    public function error(){
+    public function me(){
         echo 11;
-        //throw new \Exception(ErrorCode::DATA_NOT_FOUND);
     }
 
 }

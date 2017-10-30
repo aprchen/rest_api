@@ -10,13 +10,14 @@
 namespace App\Middleware;
 
 
+use App\Constants\Services;
 use Phalcon\Annotations\Factory;
 use Phalcon\Config;
 use Phalcon\Events\Event;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\Micro;
 use Phalcon\Mvc\Micro\MiddlewareInterface;
-
+use Phalcon\Annotations\Adapter\Memory as MemoryAdapter;
 class FirewallMiddleware implements MiddlewareInterface
 {
     /**
@@ -26,26 +27,34 @@ class FirewallMiddleware implements MiddlewareInterface
      * @param Micro $app
      * @return bool
      * @internal param Micro $application
+     * 用法,在对应 controller 的 方法注释中 添加 @Firewall;
      *
      */
     public function beforeExecuteRoute(Event $event, Micro $app)
     {
         $whiteList = $app->getDI()->getConfig()->whiteList;
-        $controller = $app->getActiveHandler();
-        var_dump($controller);
-        exit();
-        $ipAddress = $app->request->getClientAddress();
-        if (true !== array_key_exists($ipAddress, $whiteList)) {
-            $app->response->setStatusCode(401, 'Not ');
-            $app->response->sendHeaders();
-
-            $message = "当前ip无法访问";
-            $app->response->setContent($message);
-            $app->response->send();
-
-            return false;
+        $activeHandler = $app->getActiveHandler();
+        $controller = $activeHandler[0] ?? null;
+        $action = $activeHandler[1] ?? null;
+        $flag = false;
+        if($controller&& $action){
+            $reader = new MemoryAdapter();
+            $annotations = $reader->get($controller);
+            $flag = $annotations->getMethodsAnnotations()[$action]->has("Firewall");
         }
+        if($flag){
+            $ipAddress = $app->request->getClientAddress();
+            if (true !== array_key_exists($ipAddress, $whiteList)) {
+                $app->response->setStatusCode(401, 'Not Allowed');
+                $app->response->sendHeaders();
 
+                $message = "当前ip无法访问";
+                $app->response->setContent($message);
+                $app->response->send();
+
+                return false;
+            }
+        }
         return true;
     }
 

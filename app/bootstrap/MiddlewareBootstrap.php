@@ -33,9 +33,9 @@ class MiddlewareBootstrap implements BootstrapInterface
         /** 跨域 */
         $app->before(new CORSMiddleware());
 
-//        $eventsManager->attach("micro",new FirewallMiddleware());
-//        /** ip限制 */
-//        $app->before(new FirewallMiddleware());
+        $eventsManager->attach("micro",new FirewallMiddleware());
+        /** ip限制 */
+        $app->before(new FirewallMiddleware());
 
         $eventsManager->attach("micro",new OptionsResponseMiddleware());
         /** option 请求回复 */
