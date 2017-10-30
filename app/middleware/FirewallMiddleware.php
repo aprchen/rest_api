@@ -32,7 +32,7 @@ class FirewallMiddleware implements MiddlewareInterface
      */
     public function beforeExecuteRoute(Event $event, Micro $app)
     {
-        $whiteList = $app->getDI()->getConfig()->whiteList;
+        $whiteList = $app->getDI()->getConfig()->whiteList->toArray();
         $activeHandler = $app->getActiveHandler();
         $controller = $activeHandler[0] ?? null;
         $action = $activeHandler[1] ?? null;
@@ -44,7 +44,7 @@ class FirewallMiddleware implements MiddlewareInterface
         }
         if($flag){
             $ipAddress = $app->request->getClientAddress();
-            if (true !== array_key_exists($ipAddress, $whiteList)) {
+            if (!array_search($ipAddress, $whiteList)>0) {
                 $app->response->setStatusCode(401, 'Not Allowed');
                 $app->response->sendHeaders();
 
