@@ -5,6 +5,7 @@ use App\Middleware\CORSMiddleware;
 use App\Middleware\FirewallMiddleware;
 use App\Middleware\NotFoundMiddleware;
 use App\Middleware\OptionsResponseMiddleware;
+use App\Middleware\ResponseMiddleware;
 use Phalcon\Config;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Events\Manager;
@@ -41,6 +42,9 @@ class MiddlewareBootstrap implements BootstrapInterface
         /** option 请求回复 */
         $app->before(new OptionsResponseMiddleware());
 
+        $eventsManager->attach("micro",new ResponseMiddleware());
+        /** 数据回复 */
+        $app->after(new ResponseMiddleware());
         $app->setEventsManager($eventsManager);
     }
 }

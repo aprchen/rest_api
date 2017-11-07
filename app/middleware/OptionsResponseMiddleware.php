@@ -22,11 +22,9 @@ class OptionsResponseMiddleware implements MiddlewareInterface
         $request = new Request();
         // OPTIONS request, just send the headers and respond OK
         if ($request->isOptions()) {
-
             $app->response->setJsonContent([
                 'result' => 'OK',
             ]);
-
             return false;
         }
     }

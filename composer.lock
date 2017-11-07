@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0dfb1c270fb71015ee5447f01505cb9c",
+    "content-hash": "d2c6f7a64c3b6271502bdd12dc310e26",
     "packages": [
         {
             "name": "workerman/gatewayclient",

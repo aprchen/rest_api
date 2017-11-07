@@ -12,10 +12,17 @@ namespace App\Controller;
 class DefaultController extends ControllerBase
 {
     /**
-     * @Mapping(path = "/error")
+     * @Mapping(path = "/error404")
      */
     public function error404(){
         echo $this->view->render("404");
+    }
+
+    /**
+     * @Mapping(path = "/error500")
+     */
+    public function error500(){
+        echo $this->view->render("500");
     }
 
     /**

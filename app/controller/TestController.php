@@ -9,6 +9,7 @@
 
 namespace App\Controller;
 use App\Models\Account;
+use App\Mvc\SwooleClient;
 
 /**
  * Class RoomController
@@ -46,14 +47,48 @@ class TestController extends ControllerBase
     }
 
     /**
+     * @Mapping(path = "/mysql/{n:[0-9]+}",method="get")
+     *
+     * 使用swoole 进行异步处理,需启动TCPServer 中的swoole 服务
+     * php cli.php
+     */
+    public function mysql($n)
+    {
+        $client = new SwooleClient();
+        $client->send("mysql_test",$n);
+        $res = $client->get();
+        echo $res;
+    }
+
+    /**
+     *@Mapping(path = "/ping",method="get")
+     * swoole 心跳测试
+     */
+    public function ping(){
+        $client = new SwooleClient();
+        $client->send("ping");
+        $res = $client->get();
+        echo $res;
+    }
+
+    /**
      * @Mapping(path = "/{id:[0-9]+}",method="get")
      */
     public function getId($id){
-
         $res = Account::findFirst($id);
         return $res;
     }
 
+    /**
+     * @Mapping(path = "/export")
+     */
+    public function export(){
+
+    }
+
+    /**
+     * @Mapping(path= "/maopao")
+     */
     public function maoAction(){
         //echo rand(1,500);
         $source = [];
@@ -76,7 +111,6 @@ class TestController extends ControllerBase
         }
         $str2 = implode(" ,",$source);
         echo "排序后 : {$str2}";
-        exit();
     }
 
 }
