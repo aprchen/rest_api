@@ -9,6 +9,7 @@
 
 namespace App\Mvc;
 use App\Constants\ErrorCode;
+use App\Constants\Services;
 use App\Controller\ControllerBase;
 use Phalcon\Annotations\Annotation;
 use Phalcon\Annotations\Collection;
@@ -81,10 +82,10 @@ class EndPointManager
                 if(!$path){
                     throw new EndPointException(ErrorCode::POST_DATA_INVALID,"路由配置错误");
                 }
-                if($method == "get"){
+                if($method == Services::GET_METHOD){
                     $collection->get($path,$name);
                 }
-                if($method == "post"){
+                if($method == Services::POST_METHOD){
                     $collection->post($path,$name);
                 }
             }
@@ -106,7 +107,7 @@ class EndPointManager
     }
 
     public function getUrlPrefix(Collection $collection ){
-        return ($collection->has("url_prefix")) ? $collection->get("url_prefix")->getArgument("value") :"/";
+        return ($collection->has(Services::URL_PREFIX)) ? $collection->get(Services::URL_PREFIX)->getArgument(Services::VALUE) :"/";
     }
     /**
      * @param string $className
@@ -131,19 +132,19 @@ class EndPointManager
 
     protected function getMethod(Annotation $annotation):string
     {
-        $method = $annotation->getArgument("method") ?? "get";
+        $method = $annotation->getArgument(Services::METHOD) ?? Services::GET_METHOD;
         return $method;
     }
 
     protected function getMapping(Collection $collection):Annotation
     {
-        if($collection->has("Mapping")){
-            return $collection->get("Mapping");
+        if($collection->has(Services::MAPPING)){
+            return $collection->get(Services::MAPPING);
         }
     }
 
     protected function getPath(Annotation $annotation){
-        $path = $annotation->getArgument('path');
+        $path = $annotation->getArgument(Services::PATH);
         return $path;
     }
 
