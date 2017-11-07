@@ -48,5 +48,84 @@
             "stub",
             "stubs"
         ]
+    },
+    {
+        "name": "workerman/gatewayclient",
+        "version": "v3.0.0",
+        "version_normalized": "3.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/walkor/GatewayClient.git",
+            "reference": "e58edc1f5eee7465c24fc97d8adff1f59b1b8455"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/walkor/GatewayClient/e58edc1f5eee7465c24fc97d8adff1f59b1b8455.zip",
+            "reference": "e58edc1f5eee7465c24fc97d8adff1f59b1b8455",
+            "shasum": ""
+        },
+        "time": "2016-12-07T09:06:11+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "GatewayClient\\": "./"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "homepage": "http://www.workerman.net"
+    },
+    {
+        "name": "workerman/workerman",
+        "version": "v3.5.2",
+        "version_normalized": "3.5.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/walkor/Workerman.git",
+            "reference": "3660eb5b887e4230285e4d563922ab4f85a16176"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/walkor/Workerman/3660eb5b887e4230285e4d563922ab4f85a16176.zip",
+            "reference": "3660eb5b887e4230285e4d563922ab4f85a16176",
+            "shasum": ""
+        },
+        "require": {
+            "ext-pcntl": "*",
+            "ext-posix": "*",
+            "php": ">=5.3"
+        },
+        "suggest": {
+            "ext-event": "For better performance. "
+        },
+        "time": "2017-11-01T05:50:07+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Workerman\\": "./"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "walkor",
+                "email": "walkor@workerman.net",
+                "homepage": "http://www.workerman.net",
+                "role": "Developer"
+            }
+        ],
+        "description": "An asynchronous event driven PHP framework for easily building fast, scalable network applications.",
+        "homepage": "http://www.workerman.net",
+        "keywords": [
+            "asynchronous",
+            "event-loop"
+        ]
     }
 ]

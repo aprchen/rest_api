@@ -1,4 +1,6 @@
 <?php
+namespace App\Models;
+use Phalcon\Mvc\Model;
 
 /**
  * Created by PhpStorm.
@@ -7,7 +9,7 @@
  * Time: 下午7:14
  * Hope deferred makes the heart sick,but desire fulfilled is a tree of life.
  */
-class Users extends \Phalcon\Mvc\Model
+class Users extends Model
 {
 
 }

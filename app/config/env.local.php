@@ -6,7 +6,9 @@ return [
         'host'       => 'localhost',
         'username'   => 'root',
         'password'   => 'root',
-        'dbname'     => '',
+        'port'       => '8889',
+        'prefix'     => 't_',
+        'dbname'     => 'test',
         'charset'    => 'utf8',
     ],
     'whiteList'=>[

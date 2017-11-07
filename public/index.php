@@ -9,6 +9,13 @@ define('BASE_PATH', dirname(__DIR__));
 define('APP_PATH', BASE_PATH . '/app');
 define('VENDOR_DIR', BASE_PATH . '/vendor');
 define('CONFIG_DIR', APP_PATH . '/config');
+
+/** 扩展检查 */
+if(!extension_loaded('phalcon'))
+{
+    exit("Please install phalcon extension. See https://phalconphp.com/zh/ \n");
+}
+
 /** @var \Phalcon\Config $config */
 $config = null;
 
@@ -79,7 +86,8 @@ try {
      */
     $app->handle();
 
-} catch (Exception $e) {
-      echo $e->getMessage() . '<br>';
+} catch (Throwable $t) {
+      echo $t->getMessage() . '<br>';
+      echo $t->getFile() .$t->getLine().'<br>';
       echo '<pre>' . $e->getTraceAsString() . '</pre>';
 }

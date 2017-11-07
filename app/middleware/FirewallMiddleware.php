@@ -33,6 +33,7 @@ class FirewallMiddleware implements MiddlewareInterface
     public function beforeExecuteRoute(Event $event, Micro $app)
     {
         $whiteList = $app->getDI()->getConfig()->whiteList->toArray();
+        /**  $activeHandler 返回一个数组,第一个为controller 对象,第二个wei function 名 */
         $activeHandler = $app->getActiveHandler();
         $controller = $activeHandler[0] ?? null;
         $action = $activeHandler[1] ?? null;

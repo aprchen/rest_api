@@ -12,5 +12,21 @@ use Phalcon\Mvc\Controller;
  */
 class ControllerBase extends Controller
 {
+    public function responseOk(){
+        $data = [
+            'code'    => 200,
+            'status'  => 'success',
+            'message' => 'ok',
+            'payload' => [],
+        ];
+       return $this->JsonReturn($data);
+    }
 
+    public function getParameter($name,$type="string"){
+
+    }
+
+    public function JsonReturn(array $data){
+        return $this->response->setJsonContent($data);
+    }
 }

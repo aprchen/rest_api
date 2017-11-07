@@ -10,7 +10,7 @@
 namespace App\Mvc;
 
 
-class EndPointException extends \Exception
+class EndPointException extends ApiException
 {
 
 

@@ -53,8 +53,7 @@ class ServiceBootstrap implements BootstrapInterface
 
             $connection = new $class($config);
 
-            // Assign the eventsManager to the db adapter instance
-            //$connection->setEventsManager($di->get(Services::EVENTS_MANAGER));
+            $connection->setEventsManager($di->get(Services::EVENTS_MANAGER));
 
             return $connection;
         });
