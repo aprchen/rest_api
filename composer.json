@@ -27,8 +27,6 @@
     }
   ],
   "require": {
-    "php":">=7.0.0" ,
-    "workerman/workerman": "^3.5",
-    "workerman/gatewayclient": "^3.0"
+    "php":">=7.0.0"
   }
 }
