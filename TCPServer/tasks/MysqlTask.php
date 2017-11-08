@@ -12,18 +12,8 @@ class MysqlTask
     protected  $db;
     function __construct()
     {
-        $class = 'Phalcon\Db\Adapter\Pdo\Mysql';
-        $connection = new $class( [
-            'adapter'    => 'Mysql',
-            'host'       => 'localhost',
-            'username'   => 'root',
-            'password'   => 'root',
-            'port'       => '8889',
-            'prefix'     => 't_',
-            'dbname'     => 'test',
-            'charset'    => 'utf8',
-        ]);
-        $this->db = $connection;
+        $db = new MysqliDb ('host', 'username', 'password', 'databaseName');
+        $this->db = $db;
     }
 
     public function task1($num)

@@ -9,16 +9,24 @@ use Phalcon\Cli\Task;
  * Hope deferred makes the heart sick,but desire fulfilled is a tree of life.
  *
  * https://wiki.swoole.com/wiki/page/683.html
+ * @property Phalcon\Config config
  */
 class MainTask extends Task
 {
     public function mainAction()
     {
-        $serv = new swoole_server("127.0.0.1", 9501);
+        /**
+         * 配置文件
+         */
+        $config = $this->config->server;
+        /**
+         * 新建swoole服务
+         */
+        $serv = new swoole_server($config->host, $config->prot);
         //设置task_worker_num
         $serv->set([
-            'worker_num' => 2,
-            'task_worker_num' => 1,
+            'worker_num' => $config->worker_num,
+            'task_worker_num' => $config->task_worker_num,
         ]);
         //客户端链接回调
         $serv->on('Connect', function ($serv, $fd) {
@@ -69,6 +77,19 @@ class MainTask extends Task
         });
         //执行
         $serv->start();
+    }
+
+    /**
+     *
+     * $this->console->handle(
+     *   [
+     *      "task"   => "main",
+     *       "action" => "test",
+     *  ]);
+     *
+     */
+    public function testAction(){
+        echo "hello";
     }
 
 }

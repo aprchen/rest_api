@@ -26,22 +26,21 @@ $loader->registerDirs(
     ]
 );
 
+require_once __DIR__."/vendor/autoload.php";
 $loader->register();
 
 // Load the configuration file (if any)
 $configFile = __DIR__ . '/config/config.php';
 
 if (is_readable($configFile)) {
-    $config = include $configFile;
-
-    $di->set('config', $config);
+    $config = include_once $configFile;
+    $di->setShared('config', $config);
 }
-
 // Create a console application
 $console = new ConsoleApp();
 
+$di->setShared("console", $console);
 $console->setDI($di);
-
 /**
  * Process the console arguments
  */
