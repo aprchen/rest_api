@@ -7,7 +7,7 @@
  * Hope deferred makes the heart sick,but desire fulfilled is a tree of life.
  */
 
-namespace App\Mvc;
+namespace App\Component;
 
 use swoole_client;
 

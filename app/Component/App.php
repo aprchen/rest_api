@@ -1,5 +1,5 @@
 <?php
-namespace App\Mvc;
+namespace App\Component;
 use Phalcon\Factory;
 use Phalcon\Mvc\Micro;
 use Phalcon\Annotations\Adapter\Memory as MemoryAdapter;

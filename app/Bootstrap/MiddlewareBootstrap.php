@@ -42,9 +42,9 @@ class MiddlewareBootstrap implements BootstrapInterface
         /** option 请求回复 */
         $app->before(new OptionsResponseMiddleware());
 
-        $eventsManager->attach("micro",new ResponseMiddleware());
-        /** 数据回复 */
-        $app->after(new ResponseMiddleware());
+//        $eventsManager->attach("micro",new ResponseMiddleware());
+//        /** 数据回复 */
+//        $app->after(new ResponseMiddleware());
         $app->setEventsManager($eventsManager);
     }
 }

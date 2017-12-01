@@ -10,11 +10,12 @@
 namespace App\BootStrap;
 
 
+use App\Component\EndPointManager;
 use App\Controller\DefaultController;
 use App\Controller\TestController;
 use App\Controller\UsersController;
+use App\Controller\WeChat\IndexController;
 use App\Mapper\BootstrapInterface;
-use App\Mvc\EndPointManager;
 use Phalcon\Config;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Mvc\Micro;
@@ -35,7 +36,11 @@ class EndPointBootstrap implements BootstrapInterface
         $manager->add(
             DefaultController::class,
             UsersController::class,
-            TestController::class
+            TestController::class,
+            /**
+             * 微信
+             */
+            IndexController::class
         );
         $manager->run();
     }
