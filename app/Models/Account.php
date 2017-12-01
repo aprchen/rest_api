@@ -51,6 +51,9 @@ class Account extends Model
      */
     public $updateFlag;
 
+    /**
+     * @return string
+     */
     public function getSource()
     {
         $arr = explode('\\',get_class($this));

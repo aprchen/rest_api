@@ -27,6 +27,7 @@
     }
   ],
   "require": {
-    "php":">=7.0.0"
+    "php":">=7.0.0",
+    "overtrue/wechat": "^3.3"
   }
 }

@@ -13,5 +13,4 @@ namespace App\Component;
 class EndPointException extends ApiException
 {
 
-
 }

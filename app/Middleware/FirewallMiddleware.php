@@ -18,7 +18,7 @@ use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\Micro;
 use Phalcon\Mvc\Micro\MiddlewareInterface;
 use Phalcon\Annotations\Adapter\Memory as MemoryAdapter;
-class FirewallMiddleware implements MiddlewareInterface
+class FirewallMiddleware extends BaseMiddleware
 {
     /**
      * controller 执行之前发生
@@ -48,7 +48,6 @@ class FirewallMiddleware implements MiddlewareInterface
             if (!array_search($ipAddress, $whiteList)>0) {
                 $app->response->setStatusCode(401, 'Not Allowed');
                 $app->response->sendHeaders();
-
                 $message = "当前ip无法访问";
                 $app->response->setContent($message);
                 $app->response->send();

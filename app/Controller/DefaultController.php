@@ -9,30 +9,40 @@
 
 namespace App\Controller;
 
+use Phalcon\Mvc\View\Simple;
+
 class DefaultController extends ControllerBase
 {
+
     /**
      * @Mapping(path = "/error404")
+     * @var $view Simple
      */
-    public function error404(){
+    public function error404()
+    {
+        $this->response->setStatusCode(404, 'Not Found');
+        $this->response->sendHeaders();
+        $this->response->send();
         echo $this->view->render("404");
     }
 
     /**
      * @Mapping(path = "/error500")
      */
-    public function error500(){
+    public function error500()
+    {
+        $this->response->setStatusCode(500, 'Server Error');
+        $this->response->sendHeaders();
         echo $this->view->render("500");
+        $this->response->send();
     }
 
     /**
      * @Mapping(path = "/",method ="get")
      * @ScopesPublic 公开
      */
-    public function index(){
+    public function index()
+    {
         echo $this->view->render("index");
     }
-
-
-
 }

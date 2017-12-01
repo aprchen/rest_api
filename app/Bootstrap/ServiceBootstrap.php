@@ -72,7 +72,6 @@ class ServiceBootstrap implements BootstrapInterface
          * @description Phalcon - \Phalcon\Mvc\View\Simple
          */
         $di->set(Services::VIEW, function () use ($config) {
-
             $view = new View();
             $view->setViewsDir($config->application->viewsDir);
             return $view;

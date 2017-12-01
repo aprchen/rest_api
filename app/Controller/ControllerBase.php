@@ -12,6 +12,7 @@ use Phalcon\Mvc\Controller;
  */
 class ControllerBase extends Controller
 {
+
     public function responseOk(){
         $data = [
             'code'    => 200,

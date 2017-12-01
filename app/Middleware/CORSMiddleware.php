@@ -14,7 +14,7 @@ use Phalcon\Events\Event;
 use Phalcon\Mvc\Micro;
 use Phalcon\Mvc\Micro\MiddlewareInterface;
 
-class CORSMiddleware implements MiddlewareInterface
+class CORSMiddleware extends BaseMiddleware
 {
     /**
      * Before anything happens

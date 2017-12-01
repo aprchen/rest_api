@@ -38,6 +38,7 @@ class ErrorCode
      */
     const DATA_FAILED = 4010;
     const DATA_NOT_FOUND = 4020;
+    const ROUTE_NOT_FOUND = 4040;
 
     /**
      * 服务器错误

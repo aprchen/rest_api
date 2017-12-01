@@ -7,7 +7,6 @@
  * Hope deferred makes the heart sick,but desire fulfilled is a tree of life.
  */
 return [
-
     'application' => [
         'title' => 'vhome.api',
         'description' => 'Phalcon 练习接口',
