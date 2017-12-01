@@ -89,5 +89,5 @@ try {
 } catch (Throwable $t) {
       echo $t->getMessage() . '<br>';
       echo $t->getFile() .$t->getLine().'<br>';
-      echo '<pre>' . $e->getTraceAsString() . '</pre>';
+      echo '<pre>' . $t->getTraceAsString() . '</pre>';
 }
