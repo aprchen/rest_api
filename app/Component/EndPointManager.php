@@ -8,29 +8,69 @@
  */
 
 namespace App\Component;
-use App\Constants\ErrorCode;
-use App\Constants\Services;
-use App\Controller\ControllerBase;
-use Phalcon\Annotations\Annotation;
-use Phalcon\Annotations\Collection;
 use Phalcon\Mvc\Micro\Collection as MicroCollection;
-use Phalcon\Annotations\Adapter\Memory as MemoryAdapter;
 use Phalcon\Mvc\Micro;
-use Phalcon\Annotations\Reflection;
-use ReflectionClass;
-
 class EndPointManager
 {
+
+    const LAZY_LOAD = true;
+    const DEFAULT_PREFIX = "/";
+    const METHOD_GET = "get";
+    const METHOD_POST = "post";
+    const METHOD_PUT = "put";
+    const METHOD_DELETE = "delete";
+
     /**
      * @var Micro
      */
     protected $app ;
+    /**
+     * @var
+     */
     protected $stack;
+    /**
+     * @var
+     */
+    protected $endPoints;
 
-    public function __construct(Micro $app)
+    /**
+     * @return mixed
+     */
+    public function getEndPoints()
+    {
+        return $this->endPoints;
+    }
+
+    /**
+     * @param mixed $endPoints
+     */
+    public function setEndPoints($endPoints)
+    {
+        $this->endPoints[] = $endPoints;
+    }
+
+    /**
+     * @var $instance EndPointManager;
+     */
+    protected static $instance;
+
+    private $coreConfig;
+
+    static function getInstance(Micro $app){
+        if(!isset(self::$instance)){
+            self::$instance = new static($app);
+        }
+        return self::$instance;
+    }
+
+    public function setCoreConfig($config){
+        $this->coreConfig = $config;
+        return $this;
+    }
+
+    private function __construct(Micro $app)
     {
         $this->app = $app;
-        $this->stack =null;
     }
 
     public function add(... $classNames)
@@ -40,112 +80,66 @@ class EndPointManager
 
     public function run() :void
     {
-        $arr = $this->stack;
-        if(!empty($arr)){
-            foreach ($arr as $item){
-                if(!is_string($item)){
-                    throw new EndPointException(ErrorCode::POST_DATA_INVALID,'数据异常');
-                }
-                $this->createPoint($item);
+        Core::getInstance($this->coreConfig);
+
+        while (!empty($this->stack)){
+            $item = array_pop($this->stack);
+            $endPoint = new EndPoint();
+            $endPoint->setHandle($item)->initialize();
+            $this->setEndPoints($endPoint);
+        }
+        $this->mountAll(false);
+    }
+
+    /**
+     * 端点挂载
+     * @param bool $lazy
+     */
+    protected function mountAll($lazy = false)
+    {
+        $endPoints = $this->getEndPoints();
+        if(count($endPoints)>0){
+            foreach ($endPoints as $point){
+                $this->mountPoint($point,$lazy);
             }
         }
     }
 
-
     /**
-     * @param string $controllerName
-     * @return mixed
-     * @throws EndPointException
-     * @internal param string $controller 控制器名
-     * @internal param string $controllerName
+     * @param EndPoint $point
+     * @param bool $lazy
+     * TODO 路由做缓存
      */
-    public function createPoint(string $controllerName){
-        $instance = $this->getControllerInstance($controllerName);
-
-        $reflector = $this->getReflection($controllerName);
-        $actions = $this->getActions($reflector);
-        $controller = $this->getController($reflector);
-
-        $collection = new MicroCollection();
-        $collection->setHandler($instance);
-
-        if($controller){
-            $urlPrefix = $this->getUrlPrefix($controller);
-            $collection->setPrefix($urlPrefix);
+    public function mountPoint(EndPoint $point,$lazy = false){
+        $group = $point->getGroup();
+        $points = $point->getPoints();
+        if(!$group&&empty($points)){
+            return;
         }
-        if($actions){  //Todo 完成其他请求方式
-            foreach ($actions as $name =>$point ){
-
-                $mapping = $this->getMapping($point);
-                $method = $this->getMethod($mapping);
-                $path = $this->getPath($mapping);
-                if(!$path){
-                    throw new EndPointException(ErrorCode::POST_DATA_INVALID,"路由配置错误");
-                }
-                if($method == Services::GET_METHOD){
-                    $collection->get($path,$name);
-                }
-                if($method == Services::POST_METHOD){
-                    $collection->post($path,$name);
+        $collection = new MicroCollection();
+        $collection->setHandler($point->getHandleInstance(),$lazy);
+        $urlPrefix = $group[EndPointMap::PATH] ?? self::DEFAULT_PREFIX;
+        $collection->setPrefix($urlPrefix);
+        if($points && count($points)>0){
+            foreach ($points as $name =>$item ){
+                $method = $item[EndPointMap::METHOD]?? self::METHOD_GET;
+                $path = $item[EndPointMap::PATH] ?? false;
+                if($path){
+                    if($method == self::METHOD_GET){
+                        $collection->get($path,$name);
+                    }
+                    if($method == self::METHOD_POST){
+                        $collection->post($path,$name);
+                    }
+                    if($method == self::METHOD_PUT){
+                        $collection->put($path,$name);
+                    }
+                    if($method == self::METHOD_DELETE){
+                        $collection->delete($path,$name);
+                    }
                 }
             }
         }
         $this->app->mount($collection);
     }
-
-
-
-    public function getController(Reflection $reflection){
-        $controller = $reflection->getClassAnnotations();
-        return $controller;
-    }
-
-    public function getActions(Reflection $reflection):array
-    {
-        $points = $reflection->getMethodsAnnotations();
-        return $points;
-    }
-
-    public function getUrlPrefix(Collection $collection ){
-        return ($collection->has(Services::URL_PREFIX)) ? $collection->get(Services::URL_PREFIX)->getArgument(Services::VALUE) :"/";
-    }
-    /**
-     * @param string $className
-     * @return Reflection
-     */
-    public function getReflection(string $className):Reflection
-    {
-        $reader = new MemoryAdapter();
-        $reflector = $reader->get($className);
-        return $reflector;
-    }
-
-    public function getControllerInstance(string $className){
-        $oReflectionClass = new ReflectionClass($className);
-        $instance =  $oReflectionClass->newInstance();
-       // $instance = new $className;
-        if(!$instance instanceof ControllerBase){
-            throw new EndPointException(ErrorCode::POST_DATA_INVALID,'Must Be Controller!');
-        }
-        return $instance;
-    }
-
-    protected function getMethod(Annotation $annotation):string
-    {
-        $method = $annotation->getArgument(Services::METHOD) ?? Services::GET_METHOD;
-        return $method;
-    }
-
-    protected function getMapping(Collection $collection):Annotation
-    {
-        if($collection->has(Services::MAPPING)){
-            return $collection->get(Services::MAPPING);
-        }
-    }
-
-    protected function getPath(Annotation $annotation){
-        $path = $annotation->getArgument(Services::PATH);
-        return $path;
-    }
-
 }

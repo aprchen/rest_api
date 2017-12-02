@@ -16,27 +16,21 @@ use App\Constants\ErrorCode;
 /**
  * Class UsersController
  * @package App\Controller
- * 用户端点
- * @url_prefix(value = "/users")
+ * @group(path="/user")
  */
 class UsersController extends ControllerBase
 {
     /**
-     * @internal
-     * @api {get} /:id
-     * @apiPermission commonUsers
-     * @Mapping(path = "/{id}",method ="get")
-     * @ScopesCommonUsers "需要用户登录"
+     * @return \Phalcon\Http\Response|\Phalcon\Http\ResponseInterface
+     * @point(path="/",method="get")
      */
-    public function get($id){
+    public function index(){
         $res =["hello"];
         return $this->response->setJsonContent($res);
     }
 
     /**
-     * @Mapping(path = "/me")
-     * @ScopesPublic 公开
-     * @Firewall 用于限制Ip
+     * @point(path="/me")
      */
     public function me(){
         echo 11;
