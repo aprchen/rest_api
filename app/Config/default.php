@@ -10,9 +10,9 @@ return [
     'application' => [
         'title' => 'vhome.api',
         'description' => 'Phalcon 练习接口',
-        'modelsDir'      => APP_PATH . '/models/',
-        'migrationsDir'  => APP_PATH . '/migrations/',
-        'viewsDir'       => APP_PATH . '/views/',
+        'modelsDir'      => APP_PATH . '/Models/',
+        'migrationsDir'  => APP_PATH . '/Migrations/',
+        'viewsDir'       => APP_PATH . '/Views/',
         'baseUri'        => '/',
     ],
     'authentication' => [
@@ -22,6 +22,7 @@ return [
     'annotations'=>[
         'prefix'   => 'annotations',
         'lifetime' => '3600',
-        'adapter'  => 'memory',      // Load the Memory adapter
+        'adapter'  => 'files',    //{memory 测试开发用,apc 正式环境,files }
+        "annotationsDir" => APP_PATH."/Cache/Annotations/", // files 模式启用
     ]
 ];

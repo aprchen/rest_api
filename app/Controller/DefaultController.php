@@ -15,7 +15,7 @@ class DefaultController extends ControllerBase
 {
 
     /**
-     * @Mapping(path = "/error404")
+     * @point(path="/error404")
      * @var $view Simple
      */
     public function error404()
@@ -27,7 +27,7 @@ class DefaultController extends ControllerBase
     }
 
     /**
-     * @Mapping(path = "/error500")
+     * @point(path="/error500")
      */
     public function error500()
     {
@@ -38,8 +38,7 @@ class DefaultController extends ControllerBase
     }
 
     /**
-     * @Mapping(path = "/",method ="get")
-     * @ScopesPublic 公开
+     * @point(path="/")
      */
     public function index()
     {

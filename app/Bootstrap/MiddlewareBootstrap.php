@@ -44,7 +44,7 @@ class MiddlewareBootstrap implements BootstrapInterface
          * 页面未找到
          */
         $app->notFound(function (){
-            throw new ApiException(ErrorCode::ROUTE_NOT_FOUND);
+            throw new ApiException(ErrorCode::ROUTE_NOT_FOUND,'ROUTE NOT FOUND!');
         });
         /**
          * 异常捕捉

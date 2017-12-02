@@ -50,15 +50,6 @@ class Services
     const ERROR_HELPER = "errorHelper";
     const FORMAT_HELPER = "formatHelper";
 
-    const LAZY_LOAD = true;
 
-    // EndPointManager
-    const VALUE = "value";
-    const PATH = "path";
-    const METHOD = "method";
-    const URL_PREFIX = "url_prefix";
-    const MAPPING = "Mapping";
-    const GET_METHOD = "get";
-    const POST_METHOD = "post";
 
 }

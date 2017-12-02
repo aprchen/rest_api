@@ -10,6 +10,7 @@
 namespace App\BootStrap;
 
 
+use App\Component\Core;
 use App\Component\EndPointManager;
 use App\Controller\DefaultController;
 use App\Controller\TestController;
@@ -32,7 +33,8 @@ class EndPointBootstrap implements BootstrapInterface
      */
     public function run(Micro $app, FactoryDefault $di, Config $config)
     {
-        $manager = new EndPointManager($app);
+        $config = $config->get("annotations");
+        $manager = EndPointManager::getInstance($app)->setCoreConfig($config);
         $manager->add(
             DefaultController::class,
             UsersController::class,
