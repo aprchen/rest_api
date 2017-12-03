@@ -11,11 +11,16 @@ namespace App\Controller;
 
 use Phalcon\Mvc\View\Simple;
 
+/**
+ * Class DefaultController
+ * @package App\Controller
+ * @group(path="/")
+ */
 class DefaultController extends ControllerBase
 {
 
     /**
-     * @point(path="/error404")
+     * @point(path="error404")
      * @var $view Simple
      */
     public function error404()
@@ -27,7 +32,7 @@ class DefaultController extends ControllerBase
     }
 
     /**
-     * @point(path="/error500")
+     * @point(path="error500")
      */
     public function error500()
     {

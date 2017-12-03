@@ -14,6 +14,7 @@ use App\Controller\ControllerBase;
 use App\Controller\UsersController;
 use App\Mapper\BootstrapInterface;
 use Phalcon\Config;
+use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Events\Manager;
 use Phalcon\Mvc\Micro;
@@ -33,12 +34,10 @@ class ServiceBootstrap implements BootstrapInterface
         $di->setShared(Services::CONFIG, $config);
 
         /**
-         * 反射注册
+         * @description Phalcon - EventsManager
          */
-        $di->setShared(Services::ANNOTATIONS,function (Config $config){
-            $options = $config->get(Services::ANNOTATIONS);
-            $annotations = Factory::load($options);
-            return $annotations;
+        $di->setShared(Services::EVENTS_MANAGER, function () use ($di, $config) {
+            return new Manager();
         });
 
         /**
@@ -50,7 +49,7 @@ class ServiceBootstrap implements BootstrapInterface
             $adapter = $config['adapter'];
             unset($config['adapter']);
             $class = 'Phalcon\Db\Adapter\Pdo\\' . $adapter;
-
+            /** @var  $connection  Mysql*/
             $connection = new $class($config);
 
             $connection->setEventsManager($di->get(Services::EVENTS_MANAGER));
@@ -73,17 +72,11 @@ class ServiceBootstrap implements BootstrapInterface
          */
         $di->set(Services::VIEW, function () use ($config) {
             $view = new View();
-            $view->setViewsDir($config->application->viewsDir);
+            $view->setViewsDir($config->get('application')->viewsDir);
             return $view;
         });
 
-        /**
-         * @description Phalcon - EventsManager
-         */
-        $di->setShared(Services::EVENTS_MANAGER, function () use ($di, $config) {
 
-            return new Manager();
-        });
 
     }
 

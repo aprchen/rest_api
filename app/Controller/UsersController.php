@@ -25,7 +25,7 @@ class UsersController extends ControllerBase
      * @point(path="/",method="get")
      */
     public function index(){
-        $res =["hello"];
+        $res =["hello world"];
         return $this->response->setJsonContent($res);
     }
 

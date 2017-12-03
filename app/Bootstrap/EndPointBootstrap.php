@@ -9,8 +9,6 @@
 
 namespace App\BootStrap;
 
-
-use App\Component\Core;
 use App\Component\EndPointManager;
 use App\Controller\DefaultController;
 use App\Controller\TestController;
@@ -20,7 +18,6 @@ use App\Mapper\BootstrapInterface;
 use Phalcon\Config;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Mvc\Micro;
-
 
 class EndPointBootstrap implements BootstrapInterface
 {
@@ -33,18 +30,17 @@ class EndPointBootstrap implements BootstrapInterface
      */
     public function run(Micro $app, FactoryDefault $di, Config $config)
     {
-        $config = $config->get("annotations");
-        $manager = EndPointManager::getInstance($app)->setCoreConfig($config);
-        $manager->add(
-            DefaultController::class,
-            UsersController::class,
-            TestController::class,
-            /**
-             * 微信
-             */
-            IndexController::class
-        );
-        $manager->run();
+        $config = $config->get("router");
+        EndPointManager::getInstance($app)
+            ->setCoreConfig($config)
+            ->setLazy(EndPointManager::LAZY_LOAD)
+            ->add(
+                DefaultController::class,
+                UsersController::class,
+                TestController::class,
+                IndexController::class   //微信
+            )
+            ->run();
     }
 
 }

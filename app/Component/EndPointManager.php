@@ -8,8 +8,15 @@
  */
 
 namespace App\Component;
+
 use Phalcon\Mvc\Micro\Collection as MicroCollection;
 use Phalcon\Mvc\Micro;
+
+/**
+ * Class EndPointManager
+ * @package App\Component
+ * TODO 路由缓存
+ */
 class EndPointManager
 {
 
@@ -19,11 +26,11 @@ class EndPointManager
     const METHOD_POST = "post";
     const METHOD_PUT = "put";
     const METHOD_DELETE = "delete";
-
+    const METHOD_ALL = [self::METHOD_GET,self::METHOD_POST,self::METHOD_PUT,self::METHOD_DELETE];
     /**
      * @var Micro
      */
-    protected $app ;
+    protected static $app;
     /**
      * @var
      */
@@ -32,6 +39,11 @@ class EndPointManager
      * @var
      */
     protected $endPoints;
+    /**
+     * @var bool
+     * 懒加载
+     */
+    protected $lazy = false;
 
     /**
      * @return mixed
@@ -42,11 +54,12 @@ class EndPointManager
     }
 
     /**
+     * @param $name
      * @param mixed $endPoints
      */
-    public function setEndPoints($endPoints)
+    public function setEndPoints($name,$endPoints)
     {
-        $this->endPoints[] = $endPoints;
+        $this->endPoints[$name] = $endPoints;
     }
 
     /**
@@ -56,90 +69,132 @@ class EndPointManager
 
     private $coreConfig;
 
-    static function getInstance(Micro $app){
-        if(!isset(self::$instance)){
+    static function getInstance($app = null)
+    {
+        if (!isset(self::$instance)) {
             self::$instance = new static($app);
         }
         return self::$instance;
     }
 
-    public function setCoreConfig($config){
+    public function setCoreConfig($config)
+    {
         $this->coreConfig = $config;
         return $this;
     }
 
-    private function __construct(Micro $app)
+    private function __construct($app)
     {
-        $this->app = $app;
+        if (empty(self::$app) && $app instanceof Micro) {
+            self::$app = $app;
+        }
     }
 
     public function add(... $classNames)
     {
         $this->stack = $classNames;
+        return $this;
     }
 
-    public function run() :void
+    public function run(): void
     {
-        Core::getInstance($this->coreConfig);
-
-        while (!empty($this->stack)){
+        Core::getInstance($this->coreConfig['annotations']);
+        while (!empty($this->stack)) {
             $item = array_pop($this->stack);
             $endPoint = new EndPoint();
             $endPoint->setHandle($item)->initialize();
-            $this->setEndPoints($endPoint);
+            $this->setEndPoints($item,$endPoint);
         }
-        $this->mountAll(false);
+        $this->mountAll();
     }
 
     /**
      * 端点挂载
-     * @param bool $lazy
      */
-    protected function mountAll($lazy = false)
+    protected function mountAll()
     {
         $endPoints = $this->getEndPoints();
-        if(count($endPoints)>0){
-            foreach ($endPoints as $point){
-                $this->mountPoint($point,$lazy);
+        if (count($endPoints) > 0) {
+            foreach ($endPoints as $point) {
+                $this->mountPoint($point);
             }
         }
     }
 
     /**
      * @param EndPoint $point
-     * @param bool $lazy
-     * TODO 路由做缓存
      */
-    public function mountPoint(EndPoint $point,$lazy = false){
+    public function mountPoint(EndPoint $point)
+    {
         $group = $point->getGroup();
         $points = $point->getPoints();
-        if(!$group&&empty($points)){
+        if (!$group && empty($points)) {
             return;
         }
         $collection = new MicroCollection();
-        $collection->setHandler($point->getHandleInstance(),$lazy);
+        $lazy = $this->isLazy();
+        $handle = $point->getHandle();
+        if(!$lazy){ //非懒加载的话,获取handle实例
+           $handle  = $point->getHandleInstance();
+        }
+        $collection->setHandler($handle, $lazy);
         $urlPrefix = $group[EndPointMap::PATH] ?? self::DEFAULT_PREFIX;
         $collection->setPrefix($urlPrefix);
-        if($points && count($points)>0){
-            foreach ($points as $name =>$item ){
+        if ($points && count($points) > 0) {
+            foreach ($points as $handle => $item) {
+                $name = $item[EndPointMap::NAME] ?? null;
                 $method = $item[EndPointMap::METHOD]?? self::METHOD_GET;
                 $path = $item[EndPointMap::PATH] ?? false;
-                if($path){
-                    if($method == self::METHOD_GET){
-                        $collection->get($path,$name);
-                    }
-                    if($method == self::METHOD_POST){
-                        $collection->post($path,$name);
-                    }
-                    if($method == self::METHOD_PUT){
-                        $collection->put($path,$name);
-                    }
-                    if($method == self::METHOD_DELETE){
-                        $collection->delete($path,$name);
+                if ($path && in_array($method,self::METHOD_ALL)) {
+                    if(is_array($path)){
+                        foreach ($path as $value){
+                            $collection->$method($value,$handle,$name);
+                        }
+                    }else{
+                         $collection->$method($path,$handle,$name);
                     }
                 }
             }
         }
-        $this->app->mount($collection);
+        self::$app->mount($collection);
+    }
+
+    protected function setPoint($path,$handle,$name,$method){
+
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLazy(): bool
+    {
+        return $this->lazy;
+    }
+
+    /**
+     * @param bool $lazy
+     * @return $this
+     * 懒加载
+     */
+    public function setLazy(bool $lazy)
+    {
+        $this->lazy = $lazy;
+        return $this;
+    }
+
+    /**
+     * @return \Phalcon\Mvc\RouterInterface
+     * 获取路由
+     */
+    public function getRouter(){
+       return self::$app->getRouter();
+    }
+
+    /**
+     * @return \Phalcon\Mvc\Router\RouteInterface[]
+     * 查看路由
+     */
+    public function getRouterMap(){
+        return self::$app->getRouter()->getRoutes();
     }
 }

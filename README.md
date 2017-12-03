@@ -3,19 +3,18 @@
 需安装phalcon 扩展 3.2
 MIT 协议
 
-路由配置:
+路由配置:默认路由参数可以看
 ```$xslt
 /**
- * @url_prefix(value = "/users")
+ * @group(path="/users")
  */
 class UsersController extends ControllerBase
 {
 }
 ```
-
 ```$xslt
     /**
-     * @Mapping(path = "/{id}",method ="get")
+     * @point(path="/{id}",method ="get")
      */
     public function get($id){
         $res =["hello"];
@@ -28,3 +27,4 @@ class UsersController extends ControllerBase
 ```$xslt
 http://localhost/users/{$id}
 ```
+QQ:2639454373

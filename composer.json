@@ -1,9 +1,14 @@
 {
   "name": "vhome.api",
-  "keywords":["RESTful", "rest", "api", "phalcon"],
-  "description":"phalcon 接口项目,设计思路部分参考自redound/phalcon-rest-boilerplate,其余请看phalcon官网",
-  "type": "project",
-  "license": "MIT",
+  "keywords": [
+    "RESTful",
+    "rest",
+    "api",
+    "phalcon"
+  ],
+  "description": "phalcon 接口项目,设计思路部分参考自redound/phalcon-rest-boilerplate,其余请看phalcon官网",
+  "type": "framework",
+  "license": "Apache",
   "support": {
     "source": "https://github.com/Succcc/vhome_api",
     "issues": "https://github.com/Succcc/vhome_api/issues"
@@ -14,20 +19,14 @@
   },
   "authors": [
     {
-      "name": "Succcc",
-      "email": "ott321@yeah.net"
-    },
-    {
-      "name": "Olivier Andriessen",
-      "email": "olivierandriessen@gmail.com"
-    },
-    {
-      "name": "Bart Blok",
-      "email": "bart@wittig.nl"
+      "name": "april2",
+      "email": "ott321@yeah.net",
+      "qq":"2639454373"
     }
   ],
   "require": {
-    "php":">=7.0.0",
+    "php": ">=7.0.0",
+    "ext-phalcon": "^3.0",
     "overtrue/wechat": "^3.3"
   }
 }

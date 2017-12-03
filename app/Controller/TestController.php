@@ -9,13 +9,14 @@
 
 namespace App\Controller;
 
+use App\Component\EndPointManager;
 use App\Models\Account;
 use App\Mvc\SwooleClient;
 
 /**
  * Class TestController
  * @package App\Controller
- * @group(path="/")
+ * @group(path="/test")
  */
 class TestController extends ControllerBase
 {
@@ -28,11 +29,12 @@ class TestController extends ControllerBase
         echo $id;
     }
     /**
-     * @point(path="test",allow="me")
+     * @point(path="/test",allow="me")
      */
     public function two()
     {
-        echo "test";
+      $manager = EndPointManager::getInstance();
+      var_dump($manager->getEndPoints());
     }
 
 }

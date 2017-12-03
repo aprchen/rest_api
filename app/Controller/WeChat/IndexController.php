@@ -9,27 +9,21 @@
 
 namespace App\Controller\WeChat;
 
-
-use App\Constants\ErrorCode;
+use App\Component\EndPointManager;
 use App\Controller\ControllerBase;
 
 
 /**
- * Class UsersController
- * @package App\Controller
- * 用户端点
- * @url_prefix(value = "/wechat")
+ * Class IndexController
+ * @package App\Controller\WeChat
+ * @group(path="/wechat",fire_wall="list")
  */
 class IndexController extends ControllerBase
 {
     /**
-     * @internal
-     * @apiPermission commonUsers
-     * @Mapping(path = "/index",method ="get")
-     * @ScopesCommonUsers "需要用户登录"
+     * @point(path={"/","/index"},method="get",name="wechat")
      */
     public function index(){
-        $res =["hello"];
-        return $this->response->setJsonContent($res);
+        var_dump(EndPointManager::getInstance()->getRouterMap());
     }
 }

@@ -10,14 +10,14 @@
 namespace App\Middleware;
 
 
+use App\Component\EndPoint;
+use App\Component\EndPointManager;
+use App\Component\EndPointMap;
 use App\Constants\Services;
-use Phalcon\Annotations\Factory;
 use Phalcon\Config;
 use Phalcon\Events\Event;
-use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\Micro;
-use Phalcon\Mvc\Micro\MiddlewareInterface;
-use Phalcon\Annotations\Adapter\Memory as MemoryAdapter;
+
 class FirewallMiddleware extends BaseMiddleware
 {
     /**
@@ -27,31 +27,43 @@ class FirewallMiddleware extends BaseMiddleware
      * @param Micro $app
      * @return bool
      * @internal param Micro $application
-     * 用法,在对应 controller 的 方法注释中 添加 @Firewall;
-     *
+     * 有防火墙注解,且访问Ip在对应名单中,可以访问
      */
     public function beforeExecuteRoute(Event $event, Micro $app)
     {
-        $whiteList = $app->getDI()->getConfig()->whiteList->toArray();
-        /**  $activeHandler 返回一个数组,第一个为controller 对象,第二个wei function 名 */
         $activeHandler = $app->getActiveHandler();
+        /** @var  $group Micro\LazyLoader */
         $controller = $activeHandler[0] ?? null;
         $action = $activeHandler[1] ?? null;
-        $flag = false;
-        if($controller&& $action){
-            $reader = new MemoryAdapter();
-            $annotations = $reader->get($controller);
-            $flag = $annotations->getMethodsAnnotations()[$action]->has("Firewall");
+        $fire = "";
+        if ($controller && $action) {
+            $arr = EndPointManager::getInstance()->getEndPoints();
+            /** @var  $endPoint EndPoint */
+            $endPoint = $arr[$controller->getDefinition()];
+            $group = $endPoint->getGroup();
+            $point = $endPoint->getPoints()[$action];
+            if (isset($group[EndPointMap::FIRE_WALL])) {
+                $fire = $group[EndPointMap::FIRE_WALL];
+            }else if(isset($point[EndPointMap::FIRE_WALL])){
+                $fire = $point[EndPointMap::FIRE_WALL];
+            }
         }
-        if($flag){
+        if ($fire) {
             $ipAddress = $app->request->getClientAddress();
-            if (!array_search($ipAddress, $whiteList)>0) {
+            /** @var  $config Config */
+            $config = $app->getService(Services::CONFIG);
+            $list = $config->get($fire) ?? null;
+
+            if($list && count($list)>0){
+                $list= $list->toarray();
+                if(in_array($ipAddress,$list)){
+                    return true;
+                }
                 $app->response->setStatusCode(401, 'Not Allowed');
                 $app->response->sendHeaders();
                 $message = "当前ip无法访问";
                 $app->response->setContent($message);
                 $app->response->send();
-
                 return false;
             }
         }
