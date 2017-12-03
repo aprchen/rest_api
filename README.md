@@ -1,7 +1,5 @@
 # vhome_api
 使用 phalcon Micro 搭建 restfuapi
-需安装phalcon 扩展 3.2
-MIT 协议
 
 路由配置:默认路由参数可以看
 ```$xslt
