@@ -9,37 +9,33 @@
 
 namespace App\BootStrap;
 
+use App\Component\BootstrapInterface;
+use App\Component\Core\App;
+use App\Component\Http\ErrorHelper;
 use App\Constants\Services;
-use App\Controller\ControllerBase;
-use App\Controller\UsersController;
-use App\Mapper\BootstrapInterface;
 use Phalcon\Config;
 use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Events\Manager;
-use Phalcon\Mvc\Micro;
 use Phalcon\Mvc\Url as UrlResolver;
 use Phalcon\Mvc\View\Simple as View;
-use Phalcon\Annotations\Factory;
-use Phalcon\Annotations\Adapter\Memory as MemoryAdapter;
+
 
 class ServiceBootstrap implements BootstrapInterface
 {
 
-    public function run(Micro $app, FactoryDefault $di, Config $config)
+    public function run(App $app, FactoryDefault $di, Config $config)
     {
         /**
          * @description Config - \Phalcon\Config
          */
         $di->setShared(Services::CONFIG, $config);
-
         /**
          * @description Phalcon - EventsManager
          */
-        $di->setShared(Services::EVENTS_MANAGER, function () use ($di, $config) {
-            return new Manager();
-        });
+        $di->setShared(Services::EVENTS_MANAGER, new Manager());
 
+        $di->setShared(Services::ERROR_HELPER, new ErrorHelper());
         /**
          * @description Phalcon - \Phalcon\Db\Adapter\Pdo\Mysql
          */
@@ -76,10 +72,6 @@ class ServiceBootstrap implements BootstrapInterface
             return $view;
         });
 
-
-
     }
-
-
 
 }

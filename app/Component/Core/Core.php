@@ -7,7 +7,7 @@
  * Hope deferred makes the heart sick,but desire fulfilled is a tree of life.
  */
 
-namespace App\Component;
+namespace App\Component\Core;
 
 use Phalcon\Annotations\Annotation;
 use Phalcon\Annotations\Collection;

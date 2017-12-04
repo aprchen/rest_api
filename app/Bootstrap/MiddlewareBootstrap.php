@@ -1,14 +1,14 @@
 <?php
 namespace App\BootStrap;
 
-use App\Component\ApiException;
-use App\Component\ExceptionManager;
-use App\Constants\ErrorCode;
-use App\Mapper\BootstrapInterface;
+use App\Component\BootstrapInterface;
+use App\Component\Core\App;
+use App\Constants\Services;
+use App\Middleware\AclMiddleware;
 use App\Middleware\CORSMiddleware;
 use App\Middleware\FirewallMiddleware;
+use App\Middleware\NotFoundMiddleware;
 use App\Middleware\OptionsResponseMiddleware;
-use App\Middleware\ResponseMiddleware;
 use Phalcon\Config;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Events\Manager;
@@ -26,41 +26,20 @@ class MiddlewareBootstrap implements BootstrapInterface
 {
 
     /**
-     * @param Micro $app
+     * @param App $app
      * @param FactoryDefault $di
      * @param Config $config
      *
      */
-    public function run(Micro $app, FactoryDefault $di, Config $config)
+    public function run(App $app, FactoryDefault $di, Config $config)
     {
-        //注册中间件到事件管理器
-        $eventsManager = new Manager();
+        /** @var  $eventsManager Manager */
+        $eventsManager = $app->getService(Services::EVENTS_MANAGER);
+        $eventsManager->attach("micro", new AclMiddleware());
+        $eventsManager->attach("micro", new NotFoundMiddleware());
         $eventsManager->attach("micro", new CORSMiddleware());
         $eventsManager->attach("micro", new FirewallMiddleware());
         $eventsManager->attach("micro", new OptionsResponseMiddleware());
         $app->setEventsManager($eventsManager);
-
-        /**
-         * 页面未找到
-         */
-        $app->notFound(function (){
-            throw new ApiException(ErrorCode::ROUTE_NOT_FOUND,'ROUTE NOT FOUND!');
-        });
-        /**
-         * 异常捕捉
-         * call_user_func
-         */
-        $app->error(function (\Throwable $t)use($app){
-            if ($t instanceof ApiException) {
-                switch ($t->getCode()) {
-                    case ErrorCode::ROUTE_NOT_FOUND:
-                        $app->response->redirect('error404');
-                        break;
-                    default:
-                        $app->response->redirect('error500');
-                        break;
-                }
-            }
-        });
     }
 }

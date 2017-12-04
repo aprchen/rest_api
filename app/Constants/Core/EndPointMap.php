@@ -1,4 +1,5 @@
 <?php
+namespace App\Constants\Core;
 /**
  * Created by PhpStorm.
  * User: sl
@@ -6,9 +7,6 @@
  * Time: 下午11:15
  * Hope deferred makes the heart sick,but desire fulfilled is a tree of life.
  */
-
-namespace App\Component;
-
 
 class EndPointMap
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Mapper;
+namespace App\Component;
+
+use App\Component\Core\App;
 use Phalcon\Config;
 use Phalcon\Di\FactoryDefault;
-use Phalcon\Mvc\Micro;
-
 
 /**
  * Created by PhpStorm.
@@ -15,6 +15,6 @@ use Phalcon\Mvc\Micro;
  */
 interface BootstrapInterface {
 
-    public function run(Micro $app, FactoryDefault $di, Config $config);
+    public function run(App $app, FactoryDefault $di, Config $config);
 
 }

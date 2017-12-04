@@ -1,6 +1,7 @@
 <?php
 namespace App\BootStrap;
-use App\Mapper\BootstrapInterface;
+
+use App\Component\BootstrapInterface;
 
 /**
  * Created by PhpStorm.

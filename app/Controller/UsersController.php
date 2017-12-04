@@ -21,7 +21,7 @@ use App\Constants\ErrorCode;
 class UsersController extends ControllerBase
 {
     /**
-     * @return \Phalcon\Http\Response|\Phalcon\Http\ResponseInterface
+     *
      * @point(path="/",method="get")
      */
     public function index(){

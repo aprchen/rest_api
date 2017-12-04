@@ -9,6 +9,9 @@
 
 namespace App\Controller;
 
+use App\Component\ApiException;
+use App\Component\Request;
+use App\Constants\ErrorCode;
 use Phalcon\Mvc\View\Simple;
 
 /**
@@ -47,6 +50,6 @@ class DefaultController extends ControllerBase
      */
     public function index()
     {
-        echo $this->view->render("index");
+        $this->responseOk();
     }
 }

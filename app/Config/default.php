@@ -15,6 +15,7 @@ return [
         'viewsDir' => APP_PATH . '/Views/',
         'baseUri' => '/',
     ],
+    'debug'=>true,
     'authentication' => [
         'secret' => 'L%JZZ#aJ%Ka#I3koe!jHxcXd@U',
         'expirationTime' => 86400 * 7, // One week till token expires
@@ -30,8 +31,8 @@ return [
         'annotations' => [
             'prefix' => 'annotations',
             'lifetime' => '3600',
-            'adapter' => 'memory',    //{memory 测试开发用,apc 正式环境,files }
+            'adapter' => 'memory',    //{memory 测试开发用,apc 正式环境 }
             "annotationsDir" => APP_PATH . "/Cache/Annotations/", // files 模式启用
         ]
-    ]
+    ],
 ];

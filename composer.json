@@ -20,13 +20,13 @@
   "authors": [
     {
       "name": "april2",
-      "email": "ott321@yeah.net",
-      "qq":"2639454373"
+      "email": "ott321@yeah.net"
     }
   ],
   "require": {
     "php": ">=7.0.0",
     "ext-phalcon": "^3.0",
-    "overtrue/wechat": "^3.3"
+    "overtrue/wechat": "^3.3",
+    "firebase/php-jwt": "*"
   }
 }

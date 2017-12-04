@@ -7,11 +7,7 @@
  * Hope deferred makes the heart sick,but desire fulfilled is a tree of life.
  */
 
-namespace App\Component;
-
-
-use App\Constants\ErrorCode;
-
+namespace App\Component\Core;
 class EndPoint
 {
     const GROUP = "group";

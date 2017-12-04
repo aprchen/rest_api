@@ -29,12 +29,11 @@ class TestController extends ControllerBase
         echo $id;
     }
     /**
-     * @point(path="/test",allow="me")
+     * @point(path="/",allow="me")
      */
     public function two()
     {
-      $manager = EndPointManager::getInstance();
-      var_dump($manager->getEndPoints());
+      echo "test";
     }
 
 }

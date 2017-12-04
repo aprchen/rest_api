@@ -15,11 +15,16 @@ use Phalcon\Http\Request;
 use Phalcon\Mvc\Micro;
 use Phalcon\Mvc\Micro\MiddlewareInterface;
 
-class OptionsResponseMiddleware extends BaseMiddleware
+class OptionsResponseMiddleware implements MiddlewareInterface
 {
     public function beforeHandleRoute(Event $event, Micro $app)
     {
-
+        if ($app->request->isOptions()) {
+            $app->response->setJsonContent([
+                'result' => 'OK',
+            ]);
+            return false;
+        }
     }
 
     public function call(Micro $api)

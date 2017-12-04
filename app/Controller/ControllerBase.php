@@ -23,10 +23,6 @@ class ControllerBase extends Controller
        return $this->JsonReturn($data);
     }
 
-    public function getParameter($name,$type="string"){
-
-    }
-
     public function JsonReturn(array $data){
         return $this->response->setJsonContent($data);
     }

@@ -7,11 +7,11 @@
  * Hope deferred makes the heart sick,but desire fulfilled is a tree of life.
  */
 
-namespace App\Component;
+namespace App\Component\Swoole;
 
 use swoole_client;
 
-class SwooleClient
+class Client
 {
     protected $client;
     public function __construct()

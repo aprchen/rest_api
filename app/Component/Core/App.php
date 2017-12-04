@@ -1,36 +1,23 @@
 <?php
+namespace App\Component\Core;
+use App\Constants\Core\EndPointMap;
+use Phalcon\Mvc\Micro;
 /**
  * Created by PhpStorm.
  * User: sl
  * Date: 2017/10/29
- * Time: 下午9:44
+ * Time: 下午9:42
  * Hope deferred makes the heart sick,but desire fulfilled is a tree of life.
  */
-
-namespace App\Component;
-
-use Phalcon\Mvc\Micro\Collection as MicroCollection;
-use Phalcon\Mvc\Micro;
-
-/**
- * Class EndPointManager
- * @package App\Component
- * TODO 路由缓存
- */
-class EndPointManager
+class App extends Micro
 {
-
     const LAZY_LOAD = true;
     const DEFAULT_PREFIX = "/";
     const METHOD_GET = "get";
     const METHOD_POST = "post";
     const METHOD_PUT = "put";
     const METHOD_DELETE = "delete";
-    const METHOD_ALL = [self::METHOD_GET,self::METHOD_POST,self::METHOD_PUT,self::METHOD_DELETE];
-    /**
-     * @var Micro
-     */
-    protected static $app;
+    static $all = [self::METHOD_GET,self::METHOD_POST,self::METHOD_PUT,self::METHOD_DELETE];
     /**
      * @var
      */
@@ -44,6 +31,8 @@ class EndPointManager
      * 懒加载
      */
     protected $lazy = false;
+
+    private $coreConfig;
 
     /**
      * @return mixed
@@ -62,41 +51,18 @@ class EndPointManager
         $this->endPoints[$name] = $endPoints;
     }
 
-    /**
-     * @var $instance EndPointManager;
-     */
-    protected static $instance;
-
-    private $coreConfig;
-
-    static function getInstance($app = null)
-    {
-        if (!isset(self::$instance)) {
-            self::$instance = new static($app);
-        }
-        return self::$instance;
-    }
-
-    public function setCoreConfig($config)
-    {
-        $this->coreConfig = $config;
-        return $this;
-    }
-
-    private function __construct($app)
-    {
-        if (empty(self::$app) && $app instanceof Micro) {
-            self::$app = $app;
-        }
-    }
-
     public function add(... $classNames)
     {
         $this->stack = $classNames;
         return $this;
     }
 
-    public function run(): void
+    public function setCoreConfig($config){
+        $this->coreConfig = $config;
+        return $this;
+    }
+
+    public function run()
     {
         Core::getInstance($this->coreConfig['annotations']);
         while (!empty($this->stack)) {
@@ -131,11 +97,11 @@ class EndPointManager
         if (!$group && empty($points)) {
             return;
         }
-        $collection = new MicroCollection();
+        $collection = new Micro\Collection();
         $lazy = $this->isLazy();
         $handle = $point->getHandle();
-        if(!$lazy){ //非懒加载的话,获取handle实例
-           $handle  = $point->getHandleInstance();
+        if(!$lazy){
+            $handle  = $point->getHandleInstance();
         }
         $collection->setHandler($handle, $lazy);
         $urlPrefix = $group[EndPointMap::PATH] ?? self::DEFAULT_PREFIX;
@@ -145,22 +111,18 @@ class EndPointManager
                 $name = $item[EndPointMap::NAME] ?? null;
                 $method = $item[EndPointMap::METHOD]?? self::METHOD_GET;
                 $path = $item[EndPointMap::PATH] ?? false;
-                if ($path && in_array($method,self::METHOD_ALL)) {
+                if ($path && in_array($method,self::$all)) {
                     if(is_array($path)){
                         foreach ($path as $value){
                             $collection->$method($value,$handle,$name);
                         }
                     }else{
-                         $collection->$method($path,$handle,$name);
+                        $collection->$method($path,$handle,$name);
                     }
                 }
             }
         }
-        self::$app->mount($collection);
-    }
-
-    protected function setPoint($path,$handle,$name,$method){
-
+        $this->mount($collection);
     }
 
     /**
@@ -182,19 +144,5 @@ class EndPointManager
         return $this;
     }
 
-    /**
-     * @return \Phalcon\Mvc\RouterInterface
-     * 获取路由
-     */
-    public function getRouter(){
-       return self::$app->getRouter();
-    }
 
-    /**
-     * @return \Phalcon\Mvc\Router\RouteInterface[]
-     * 查看路由
-     */
-    public function getRouterMap(){
-        return self::$app->getRouter()->getRoutes();
-    }
 }

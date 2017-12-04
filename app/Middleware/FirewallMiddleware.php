@@ -10,26 +10,26 @@
 namespace App\Middleware;
 
 
-use App\Component\EndPoint;
-use App\Component\EndPointManager;
-use App\Component\EndPointMap;
+use App\Component\Core\App;
+use App\Component\Core\EndPoint;
+use App\Constants\Core\EndPointMap;
 use App\Constants\Services;
 use Phalcon\Config;
 use Phalcon\Events\Event;
 use Phalcon\Mvc\Micro;
 
-class FirewallMiddleware extends BaseMiddleware
+class FirewallMiddleware implements Micro\MiddlewareInterface
 {
     /**
      * controller 执行之前发生
      *
      * @param Event $event
-     * @param Micro $app
+     * @param App $app
      * @return bool
      * @internal param Micro $application
      * 有防火墙注解,且访问Ip在对应名单中,可以访问
      */
-    public function beforeExecuteRoute(Event $event, Micro $app)
+    public function beforeExecuteRoute(Event $event, App $app)
     {
         $activeHandler = $app->getActiveHandler();
         /** @var  $group Micro\LazyLoader */
@@ -37,7 +37,7 @@ class FirewallMiddleware extends BaseMiddleware
         $action = $activeHandler[1] ?? null;
         $fire = "";
         if ($controller && $action) {
-            $arr = EndPointManager::getInstance()->getEndPoints();
+            $arr = $app->getEndPoints();
             /** @var  $endPoint EndPoint */
             $endPoint = $arr[$controller->getDefinition()];
             $group = $endPoint->getGroup();

@@ -24,6 +24,6 @@ class IndexController extends ControllerBase
      * @point(path={"/","/index"},method="get",name="wechat")
      */
     public function index(){
-        var_dump(EndPointManager::getInstance()->getRouterMap());
+        echo 1;
     }
 }
