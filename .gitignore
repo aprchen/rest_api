@@ -5,4 +5,5 @@
 vendor/
 .phalcon/
 app/Cache/
+app/Logs/
 composer.lock
