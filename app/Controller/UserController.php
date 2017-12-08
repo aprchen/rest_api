@@ -18,7 +18,7 @@ use App\Plugins\RegVerify;
  * @package App\Controller
  * @group(path="/users",name=user)
  */
-class UsersController extends ControllerBase
+class UserController extends ControllerBase
 {
     use RegVerify;
     /**

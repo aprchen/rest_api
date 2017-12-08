@@ -14,7 +14,7 @@ use App\Component\Core\ApiCollection;
 use App\Component\Core\App;
 use App\Controller\DefaultController;
 use App\Controller\TestController;
-use App\Controller\UsersController;
+use App\Controller\UserController;
 use App\Controller\WeChatController;
 use Phalcon\Config;
 use Phalcon\Di\FactoryDefault;
@@ -31,7 +31,7 @@ class EndPointBootstrap implements BootstrapInterface
     public function run(App $app, FactoryDefault $di, Config $config)
     {
         $app->mount(new ApiCollection(DefaultController::class))
-            ->mount(new ApiCollection(UsersController::class))
+            ->mount(new ApiCollection(UserController::class))
             ->mount(new ApiCollection(TestController::class))
             ->mount(new ApiCollection(WeChatController::class))
         ;
