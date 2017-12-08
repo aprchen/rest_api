@@ -50,6 +50,6 @@ class DefaultController extends ControllerBase
      */
     public function index()
     {
-        $this->responseOk();
+        return $this->view->render('index');
     }
 }

@@ -11,6 +11,7 @@ namespace App\User;
 
 use App\Component\Core\ApiPlugin;
 use App\Constants\Acl\Scopes;
+use App\Models\User;
 
 /**
  * Class Service
@@ -19,6 +20,7 @@ use App\Constants\Acl\Scopes;
  */
 class Service extends ApiPlugin
 {
+    protected $detailsCache = [];
 
     public function getDetails()
     {
@@ -35,7 +37,14 @@ class Service extends ApiPlugin
 
     protected function getDetailsForIdentity($identity)
     {
+        if (array_key_exists($identity, $this->detailsCache)) {
+            return $this->detailsCache[$identity];
+        }
 
+        $details = User::findFirst((int)$identity);
+        $this->detailsCache[$identity] = $details;
+
+        return $details;
     }
 
     public function getIdentity()
@@ -50,9 +59,18 @@ class Service extends ApiPlugin
 
     public function getRole()
     {
+        /** @var User $userModel */
+        $userModel = $this->getDetails();
         $role = [Scopes::SCOPES_UNAUTHORIZED];
+        if($userModel && isset($userModel->userRole)){
+            $arr = [];
+            $userRoles =  $userModel->userRole;
+            if(count($userRoles)>0){
+                $arr = array_column($userRoles,'role','areasId');
+            }
+            $role = array_merge($role,$arr);
+        }
+
         return $role;
     }
-
-
 }

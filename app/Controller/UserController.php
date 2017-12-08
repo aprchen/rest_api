@@ -10,7 +10,11 @@ namespace App\Controller;
 use App\Component\ApiException;
 use App\Component\Auth\Account\EmailAccountType;
 use App\Component\Auth\Manager;
+use App\Constants\Acl\Scopes;
 use App\Constants\ErrorCode;
+use App\Models\Role;
+use App\Models\User;
+use App\Models\UserRole;
 use App\Plugins\RegVerify;
 
 /**
@@ -68,4 +72,43 @@ class UserController extends ControllerBase
         $this->responseItem($this->userService->getDetails());
     }
 
+    /**
+     * 添加管理用户用
+     * @point(path='/admin',method='get',scopes={unauthorized})
+     */
+    public function addAdmin(){
+        $this->db->begin();
+        $admin = new User();
+        $admin->setPassword('123456');
+        $admin->setUserName("sladmin");
+        $admin->mobilePhone = '12345678901';
+        $admin->isActive = User::ACTIVE;
+        if(!$admin->save()){
+            $this->db->rollback();
+            foreach ($admin->getMessages() as $message){
+                echo $message;
+            }
+        }
+        $role = new Role();
+        $role->name = Scopes::SCOPES_SUPER_USERS;
+        $role->description = "管理员";
+        $role->isActive = Role::ACTIVE;
+        if(!$role->save()){
+            $this->db->rollback();
+            foreach ($role->getMessages() as $message){
+                echo $message;
+            }
+        }
+        $userRole = new UserRole();
+        $userRole->userId = $admin->id;
+        $userRole->roleId = $role->id;
+        if(!$userRole->save()){
+            $this->db->rollback();
+            foreach ($userRole->getMessages() as $message){
+                echo $message;
+            }
+        }
+        $this->db->commit();
+        return $this->responseOk();
+    }
 }
