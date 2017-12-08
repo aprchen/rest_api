@@ -10,11 +10,12 @@
 namespace App\BootStrap;
 
 use App\Component\BootstrapInterface;
+use App\Component\Core\ApiCollection;
 use App\Component\Core\App;
 use App\Controller\DefaultController;
 use App\Controller\TestController;
 use App\Controller\UsersController;
-use App\Controller\WeChat\IndexController;
+use App\Controller\WeChatController;
 use Phalcon\Config;
 use Phalcon\Di\FactoryDefault;
 
@@ -29,15 +30,11 @@ class EndPointBootstrap implements BootstrapInterface
      */
     public function run(App $app, FactoryDefault $di, Config $config)
     {
-        $app->setCoreConfig($config['router'])
-            ->setLazy(App::LAZY_LOAD)
-            ->add(
-                DefaultController::class,
-                UsersController::class,
-                TestController::class,
-                IndexController::class   //微信
-            );
-        $app->run();
+        $app->mount(new ApiCollection(DefaultController::class))
+            ->mount(new ApiCollection(UsersController::class))
+            ->mount(new ApiCollection(TestController::class))
+            ->mount(new ApiCollection(WeChatController::class))
+        ;
     }
 
 }

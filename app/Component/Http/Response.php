@@ -7,8 +7,10 @@
  * Hope deferred makes the heart sick,but desire fulfilled is a tree of life.
  */
 namespace App\Component\Http;
+
 use App\Component\ApiException;
 use App\Constants\Services;
+
 class Response extends \Phalcon\Http\Response
 {
     public function setErrorContent(\Throwable $t, $developerInfo = false)
@@ -55,6 +57,6 @@ class Response extends \Phalcon\Http\Response
     {
         parent::setJsonContent($content, $jsonOptions, $depth);
         $this->setContentType('application/json', 'UTF-8');
-        $this->setHeader('E-Tag', md5($this->getContent()));
+        $this->setEtag(md5($this->getContent()));
     }
 }

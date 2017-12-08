@@ -10,7 +10,27 @@
 namespace App\Middleware;
 
 
-class AuthTokenMiddleware
+use App\Component\Core\ApiPlugin;
+use Phalcon\Mvc\Micro\MiddlewareInterface;
+
+class AuthTokenMiddleware extends ApiPlugin implements MiddlewareInterface
 {
 
+    public function beforeExecuteRoute()
+    {
+        $token = $this->request->getToken();
+        if ($token) {
+            $this->authManager->authenticateToken($token);
+        }
+    }
+
+    /**
+     * Calls the middleware
+     *
+     * @param \Phalcon\Mvc\Micro $application
+     */
+    public function call(\Phalcon\Mvc\Micro $application)
+    {
+        // TODO: Implement call() method.
+    }
 }

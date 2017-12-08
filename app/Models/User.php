@@ -9,7 +9,11 @@ use Phalcon\Mvc\Model;
  * Time: 下午7:14
  * Hope deferred makes the heart sick,but desire fulfilled is a tree of life.
  */
-class Users extends Model
+class User extends Model
 {
+    const ACTIVE = 1;
+    const EMAIL_VERIFIED =1;
+
+    public $isActive;
 
 }

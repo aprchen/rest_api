@@ -9,19 +9,15 @@
 
 namespace App\Controller;
 
-use App\Component\EndPointManager;
-use App\Models\Account;
-use App\Mvc\SwooleClient;
-
 /**
  * Class TestController
  * @package App\Controller
- * @group(path="/test")
+ * @group(path="/test",name='test')
  */
 class TestController extends ControllerBase
 {
     /**
-     * @point(path="test/{id}",allow="me")
+     * @point(path="/test/{id}",name='one',scopes={unauthorized})
      * @param $id
      */
     public function one($id)
@@ -29,11 +25,11 @@ class TestController extends ControllerBase
         echo $id;
     }
     /**
-     * @point(path="/",allow="me")
+     * @point(path="/{s}",name='two',scopes={unauthorized})
      */
-    public function two()
+    public function two($s)
     {
-      echo "test";
+      echo "test:${s}";
     }
 
 }

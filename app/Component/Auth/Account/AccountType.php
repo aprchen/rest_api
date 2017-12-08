@@ -10,7 +10,7 @@
  * @author(redound/phalcon-rest-boilerplate)
  * @see("http://phalcon-rest.redound.org)
  */
-namespace App\Component\Auth;
+namespace App\Component\Auth\Account;
 
 
 interface AccountType

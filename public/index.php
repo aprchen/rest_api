@@ -34,6 +34,7 @@ try {
         throw new Exception('Unable to read config from ' . $configPath);
     }
     $config = include_once $configPath;
+
     $config = new Phalcon\Config($config);
 
     $envConfigPath = CONFIG_DIR . '/env.' . APPLICATION_ENV . '.php';
@@ -103,7 +104,7 @@ try {
     }
     $debugMode = isset($config->debug) ? $config->debug : (APPLICATION_ENV == 'development');
     if(!$debugMode){
-        $log = \App\Component\Log::logger();
+        $log = \App\Component\Dev\Log::logger();
         if($t->getCode()> 4000){
             $log->error('msg:'.$t->getMessage());
         }

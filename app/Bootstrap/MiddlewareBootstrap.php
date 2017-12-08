@@ -5,6 +5,7 @@ use App\Component\BootstrapInterface;
 use App\Component\Core\App;
 use App\Constants\Services;
 use App\Middleware\AclMiddleware;
+use App\Middleware\AuthTokenMiddleware;
 use App\Middleware\CORSMiddleware;
 use App\Middleware\FirewallMiddleware;
 use App\Middleware\NotFoundMiddleware;
@@ -12,8 +13,6 @@ use App\Middleware\OptionsResponseMiddleware;
 use Phalcon\Config;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Events\Manager;
-use Phalcon\Http\Request;
-use Phalcon\Mvc\Micro;
 
 /**
  * Created by PhpStorm.
@@ -35,10 +34,10 @@ class MiddlewareBootstrap implements BootstrapInterface
     {
         /** @var  $eventsManager Manager */
         $eventsManager = $app->getService(Services::EVENTS_MANAGER);
+        $eventsManager->attach("micro", new AuthTokenMiddleware());
         $eventsManager->attach("micro", new AclMiddleware());
         $eventsManager->attach("micro", new NotFoundMiddleware());
         $eventsManager->attach("micro", new CORSMiddleware());
-        $eventsManager->attach("micro", new FirewallMiddleware());
         $eventsManager->attach("micro", new OptionsResponseMiddleware());
         $app->setEventsManager($eventsManager);
     }

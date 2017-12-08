@@ -44,6 +44,4 @@ class ErrorCode
      */
     const POST_DATA_NOT_PROVIDED = 5010;
     const POST_DATA_INVALID = 5020;
-    const END_GROUP_NOT_FOUND = 5030;
-    const ENDPOINT_NOT_FOUND = 5031;
 }

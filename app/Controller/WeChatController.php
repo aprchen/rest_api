@@ -7,21 +7,18 @@
  * Hope deferred makes the heart sick,but desire fulfilled is a tree of life.
  */
 
-namespace App\Controller\WeChat;
-
-use App\Component\EndPointManager;
-use App\Controller\ControllerBase;
+namespace App\Controller;
 
 
 /**
  * Class IndexController
  * @package App\Controller\WeChat
- * @group(path="/wechat",fire_wall="list")
+ * @group(path="/wechat",name='wechat')
  */
-class IndexController extends ControllerBase
+class WeChatController extends ControllerBase
 {
     /**
-     * @point(path={"/","/index"},method="get",name="wechat")
+     * @point(path={"/","/index"},method="get",name="index")
      */
     public function index(){
         echo 1;

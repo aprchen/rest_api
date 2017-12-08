@@ -10,7 +10,31 @@
 namespace App\Component\Core;
 
 
-class ApiPlugin
+use App\Component\Auth\Manager;
+use App\Component\Auth\TokenParsers\JWTTokenParser;
+use App\Component\Http\Request;
+use App\Component\Http\Response;
+
+use App\User\Service;
+use Phalcon\Config;
+use Phalcon\Mvc\User\Plugin;
+
+
+/**
+ * Class ApiPlugin
+ *
+ * @package App\Component\Core
+ * @property Request $request
+ * @property Response $response
+ * @property JWTTokenParser $tokenParser
+ * @property Manager $authManager
+ * @property Config $config
+ * @property Service $userService
+ *
+ *
+ * di注册提示用
+ */
+class ApiPlugin extends Plugin
 {
 
 }

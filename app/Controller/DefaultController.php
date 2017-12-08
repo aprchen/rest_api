@@ -17,13 +17,13 @@ use Phalcon\Mvc\View\Simple;
 /**
  * Class DefaultController
  * @package App\Controller
- * @group(path="/")
+ * @group(path="/",name='default')
  */
 class DefaultController extends ControllerBase
 {
 
     /**
-     * @point(path="error404")
+     * @point(path="error404",name=404,scopes={unauthorized})
      * @var $view Simple
      */
     public function error404()
@@ -35,7 +35,7 @@ class DefaultController extends ControllerBase
     }
 
     /**
-     * @point(path="error500")
+     * @point(path="error500",name=500,scopes={unauthorized})
      */
     public function error500()
     {
@@ -46,7 +46,7 @@ class DefaultController extends ControllerBase
     }
 
     /**
-     * @point(path="/")
+     * @point(path='/',name='index',scopes={unauthorized})
      */
     public function index()
     {

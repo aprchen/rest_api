@@ -18,12 +18,12 @@ class Trace
     var $single_mode = false;
     var $trace_mode = false;
 
-    function getTimestamp()
+    public function getTimestamp()
     {
         return microtime(true);
     }
 
-    function start($type, $time = 0)
+    public function start($type, $time = 0)
     {
         if (empty($this->trace_mode)) return 0;
 
@@ -38,7 +38,7 @@ class Trace
         }
     }
 
-    function stop($type, $time = 0)
+    public function stop($type, $time = 0)
     {
         if (empty($this->trace_mode)) return 0;
 
@@ -66,7 +66,7 @@ class Trace
         }
     }
 
-    function log($type)
+    public function log($type)
     {
         if (empty($this->trace_mode)) return 0;
 
@@ -77,7 +77,7 @@ class Trace
     }
 
 
-    function logAll($prefix = '', $ext = array())
+    public function logAll($prefix = '', $ext = array())
     {
         if (empty($this->trace_mode)) return 0;
 
@@ -95,7 +95,7 @@ class Trace
         }
     }
 
-    function output($with_endtime = true)
+    public function output($with_endtime = true)
     {
         $output = array();
         if (!empty($this->startTime)) {
@@ -116,7 +116,7 @@ class Trace
         return $output;
     }
 
-    function reset($type = null)
+    public function reset($type = null)
     {
         if (empty($type)) {
             $this->startTime = null;
@@ -129,7 +129,7 @@ class Trace
         return $this;
     }
 
-    function enableTrace($exit = true)
+    public function enableTrace($exit = true)
     {
         $this->trace_mode = $exit;
     }

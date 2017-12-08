@@ -1,8 +1,4 @@
 <?php
-namespace App\Controller;
-use App\Mvc\EndPoint;
-use Phalcon\Mvc\Controller;
-
 /**
  * Created by PhpStorm.
  * User: sl
@@ -10,20 +6,37 @@ use Phalcon\Mvc\Controller;
  * Time: 下午5:41
  * Hope deferred makes the heart sick,but desire fulfilled is a tree of life.
  */
+
+namespace App\Controller;
+use App\Component\Auth\Manager;
+use App\Component\Auth\TokenParsers\JWTTokenParser;
+use App\Component\Http\Request;
+use App\Component\Http\Response;
+use App\User\Service;
+use Phalcon\Config;
+use Phalcon\Mvc\Controller;
+
+/**
+ * Class ControllerBase
+ * @package App\Component\Core
+ * @property Request $request
+ * @property Response $response
+ * @property JWTTokenParser $tokenParser
+ * @property Manager $authManager
+ * @property Config $config
+ * @property Service $userService
+ */
 class ControllerBase extends Controller
 {
 
     public function responseOk(){
         $data = [
-            'code'    => 200,
-            'status'  => 'success',
-            'message' => 'ok',
-            'payload' => [],
+            'status'  => 'ok'
         ];
-       return $this->JsonReturn($data);
+       return $this->response->setJsonContent($data);
     }
 
-    public function JsonReturn(array $data){
+    public function responseItem(array $data){
         return $this->response->setJsonContent($data);
     }
 }

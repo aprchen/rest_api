@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Auth;
+namespace App\Component\Auth\Account;
 
+use App\Component\Auth\Manager;
 use App\Constants\Services;
-use App\Mvc\YnAccountType;
+use App\Models\User;
 use Phalcon\Di;
 
-class EmailAccountType implements YnAccountType
+class EmailAccountType extends BaseAccountType
 {
     const NAME = "email";
 
@@ -18,8 +19,7 @@ class EmailAccountType implements YnAccountType
         $email = $data[Manager::LOGIN_DATA_USERNAME];
         $password = $data[Manager::LOGIN_DATA_PASSWORD];
 
-        /** @var \App\Model\User $user */
-        $user = \App\Model\User::findFirst([
+        $user = User::findFirst([
             'conditions' => 'email = :email:',
             'bind' => ['email' => $email]
         ]);
@@ -42,7 +42,7 @@ class EmailAccountType implements YnAccountType
 
     public function authenticate($identity)
     {
-        return \App\Model\User::count([
+        return User::count([
             'conditions' => 'id = :id:',
             'bind' => ['id' => (int)$identity]
         ]) > 0;

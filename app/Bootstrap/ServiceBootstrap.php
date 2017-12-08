@@ -9,6 +9,8 @@
 
 namespace App\BootStrap;
 
+use App\Component\Auth\Account\EmailAccountType;
+use App\Component\Auth\TokenParsers\JWTTokenParser;
 use App\Component\BootstrapInterface;
 use App\Component\Core\App;
 use App\Component\Http\ErrorHelper;
@@ -19,7 +21,8 @@ use Phalcon\Di\FactoryDefault;
 use Phalcon\Events\Manager;
 use Phalcon\Mvc\Url as UrlResolver;
 use Phalcon\Mvc\View\Simple as View;
-
+use App\Component\Auth\Manager as AuthManager;
+use App\User\Service as UserService;
 
 class ServiceBootstrap implements BootstrapInterface
 {
@@ -36,6 +39,25 @@ class ServiceBootstrap implements BootstrapInterface
         $di->setShared(Services::EVENTS_MANAGER, new Manager());
 
         $di->setShared(Services::ERROR_HELPER, new ErrorHelper());
+
+        /**
+         * @description Phalcon - TokenParsers
+         */
+        $di->setShared(Services::TOKEN_PARSER, function () use ($di, $config) {
+            return new JWTTokenParser($config->get('authentication')->secret, JWTTokenParser::ALGORITHM_HS256);
+        });
+
+        /**
+         * @description Phalcon - AuthManager
+         * 注册相应的账户类型
+         */
+        $di->setShared(Services::AUTH_MANAGER, function () use ($di, $config) {
+            $authManager = new AuthManager($config->get('authentication')->expirationTime);
+            $authManager->registerAccountType(EmailAccountType::NAME, new EmailAccountType());
+            return $authManager;
+        });
+
+
         /**
          * @description Phalcon - \Phalcon\Db\Adapter\Pdo\Mysql
          */
@@ -71,6 +93,12 @@ class ServiceBootstrap implements BootstrapInterface
             $view->setViewsDir($config->get('application')->viewsDir);
             return $view;
         });
+
+        /**
+         * @description PhalconRest - \PhalconRest\User\Service
+         * 用户服务注册
+         */
+        $di->setShared(Services::USER_SERVICE, new UserService);
 
     }
 

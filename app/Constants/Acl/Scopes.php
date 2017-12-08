@@ -7,26 +7,26 @@
  * Hope deferred makes the heart sick,but desire fulfilled is a tree of life.
  */
 
-namespace App\Constants;
+namespace App\Constants\Acl;
 
 
-class Acl
+class Scopes
 {
     /**
      * 公用,无需登录验证
      */
-    const SCOPES_PUBLIC = "public";
+    const SCOPES_UNAUTHORIZED = "unauthorized";
     /**
-     * 注册用户
+     * 普通用户
      */
-    const SCOPES_COMMON_USERS = "common_users";
+    const SCOPES_COMMON_USERS = "common_user";
     /**
-     * 会员
+     * 后台用户
      */
-    const SCOPES_VIP_USERS = "vip_users";
+    const SCOPES_MANAGER_USERS = "manager_user";
     /**
      * 管理员
      */
-    const SCOPES_SUPER_USERS = "super_users";
+    const SCOPES_SUPER_USERS = "super_user";
 
 }

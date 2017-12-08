@@ -3,11 +3,10 @@
  * @author(redound/phalcon-rest-boilerplate)
  * @see("http://phalcon-rest.redound.org)
  */
-namespace PhalconApi\Auth\TokenParsers;
+namespace App\Component\Auth\TokenParsers;
 
 use App\Component\ApiException;
 use App\Component\Auth\Session;
-use App\Component\Auth\TokenParserInterface;
 use App\Constants\ErrorCode;
 use Firebase\JWT\JWT;
 

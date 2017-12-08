@@ -7,7 +7,9 @@
  * Hope deferred makes the heart sick,but desire fulfilled is a tree of life.
  */
 
-namespace App\Component\Auth;
+namespace App\Component\Auth\TokenParsers;
+
+use App\Component\Auth\Session;
 
 interface TokenParserInterface
 {
