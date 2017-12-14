@@ -104,12 +104,7 @@ try {
         $response = new Response();
     }
     $debugMode = isset($config->debug) ? $config->debug : (APPLICATION_ENV == 'development');
-    if(!$debugMode){
-        $log = \App\Component\Dev\Log::logger();
-        if($t->getCode()> 4000){
-            $log->error('msg:'.$t->getMessage());
-        }
-    }
+    #$debugMode = false;
     $response->setErrorContent($t, $debugMode);
 }
 finally{

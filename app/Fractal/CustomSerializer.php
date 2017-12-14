@@ -24,7 +24,7 @@ class CustomSerializer extends ArraySerializer
         if ($resourceKey !== null) {
             return [$resourceKey=>$data];
         }
-        return ['data' => $data];
+        return ['item' => $data];
     }
 
 }

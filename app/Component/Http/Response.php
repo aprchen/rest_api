@@ -9,6 +9,7 @@
 namespace App\Component\Http;
 
 use App\Component\ApiException;
+use App\Component\Dev\Log;
 use App\Constants\Services;
 
 class Response extends \Phalcon\Http\Response
@@ -48,6 +49,12 @@ class Response extends \Phalcon\Http\Response
                 $developerResponse['info'] = $t->getDeveloperInfo();
             }
             $error['developer'] = $developerResponse;
+        }
+        if(!$developerInfo){
+            $log = Log::logger();//日志记录
+            if($t->getCode()> 5000){
+                $log->error('msg:'.$message);
+            }
         }
         $this->setJsonContent(['error' => $error]);
         $this->setStatusCode($statusCode);
