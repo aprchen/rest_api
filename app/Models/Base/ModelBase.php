@@ -1,9 +1,14 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Base;
 
 use Phalcon\Mvc\Model;
 
+/**
+ * Class ModelBase
+ * @package App\Models
+ *
+ */
 class ModelBase extends Model
 {
     /**
@@ -36,14 +41,12 @@ class ModelBase extends Model
 
     public function beforeCreate()
     {
-        $this->createdAt = time();
-        $this->updatedAt = $this->createdAt;
+        $this->gmtCreate = date('Y-m-d H:i:s');
+        $this->gmtModified = $this->gmtCreate;
     }
 
     public function beforeUpdate()
     {
-        $this->updatedAt = time();
+        $this->gmtModified = date('Y-m-d H:i:s');
     }
-
-
 }

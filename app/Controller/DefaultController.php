@@ -9,11 +9,6 @@
 
 namespace App\Controller;
 
-use App\Component\ApiException;
-use App\Component\Request;
-use App\Constants\ErrorCode;
-use Phalcon\Mvc\View\Simple;
-
 /**
  * Class DefaultController
  * @package App\Controller
@@ -23,8 +18,7 @@ class DefaultController extends ControllerBase
 {
 
     /**
-     * @point(path="error404",name=404,scopes={unauthorized})
-     * @var $view Simple
+     * @point(path="error404",name=404)
      */
     public function error404()
     {
@@ -35,21 +29,21 @@ class DefaultController extends ControllerBase
     }
 
     /**
-     * @point(path="error500",name=500,scopes={unauthorized})
+     * @point(path="error500",name=500)
      */
     public function error500()
     {
         $this->response->setStatusCode(500, 'Server Error');
         $this->response->sendHeaders();
-        echo $this->view->render("500");
         $this->response->send();
+        echo $this->view->render("500");
     }
 
     /**
-     * @point(path='/',name='index',scopes={unauthorized})
+     * @point(path='/',name='index')
      */
     public function index()
     {
-        return $this->view->render('index');
+        echo $this->view->render('index');
     }
 }

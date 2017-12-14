@@ -9,6 +9,13 @@
 
 namespace App\Controller;
 
+use App\Component\ApiException;
+use App\Constants\ErrorCode;
+use App\Models\User;
+use App\Transformers\UserTransformer;
+use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
+
 /**
  * Class TestController
  * @package App\Controller
@@ -17,7 +24,7 @@ namespace App\Controller;
 class TestController extends ControllerBase
 {
     /**
-     * @point(path="/test/{id}",name='one',scopes={unauthorized})
+     * @point(path="/test/{id}",name='one')
      * @param $id
      */
     public function one($id)
@@ -25,11 +32,34 @@ class TestController extends ControllerBase
         echo $id;
     }
     /**
-     * @point(path="/{s}",name='two',scopes={unauthorized})
+     * @point(path="/{s}",name='two')
      */
     public function two($s)
     {
       echo "test:${s}";
+    }
+
+    /**
+     * @point(path='/oauth',name='oauth')
+     */
+    public function oauth(){
+        $res = $this->getUriBuilder(User::class,'id')->getQuery()->execute();
+        if(!$res){
+           throw new ApiException(ErrorCode::DATA_NOT_FOUND);
+        }
+        $resource = new Collection($res, new UserTransformer(), 'data');
+        $data = $this->fractal->createData($resource)->toArray();
+        return $this->responseItem($data);
+    }
+    /**
+     * @point(path="/url",name='redirectUrl')
+     */
+    public function redirectUrl(){
+//        $token = "asdqweqw1e23q1w3e2q";
+//        $scope = Scopes::SCOPES_COMMON_USERS;
+//        $this->response->setStatusCode(302);
+//        $this->response->setHeader('Location','http://host-api:7888/test/oauth');
+//        $this->response->send();
     }
 
 }

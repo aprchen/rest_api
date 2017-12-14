@@ -21,11 +21,11 @@ class Scopes
      */
     const SCOPES_COMMON_USERS = "common_user";
     /**
-     * 后台用户
+     * 平台用户
      */
     const SCOPES_MANAGER_USERS = "manager_user";
     /**
-     * 管理员
+     * 系统管理员
      */
     const SCOPES_SUPER_USERS = "super_user";
 

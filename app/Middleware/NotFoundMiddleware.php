@@ -19,7 +19,7 @@ class NotFoundMiddleware implements MiddlewareInterface
 {
     public function beforeNotFound()
     {
-        throw new ApiException(ErrorCode::DATA_NOT_FOUND);
+        throw new ApiException(ErrorCode::GENERAL_NOT_FOUND);
     }
 
     public function call(Micro $api)

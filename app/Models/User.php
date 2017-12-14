@@ -3,10 +3,15 @@ namespace App\Models;
 use App\Component\ApiException;
 use App\Constants\ErrorCode;
 use App\Constants\Services;
+use App\Models\Base\CacheBase;
+use App\Models\Base\ModelBase;
+use App\Models\Behavior\Blamable;
 use App\Plugins\RegVerify;
 use Phalcon\Di;
+use Phalcon\Mvc\Model\Behavior\SoftDelete;
+use Phalcon\Mvc\Model\Message;
+use Phalcon\Mvc\ModelInterface;
 use Phalcon\Validation;
-use Phalcon\Validation\Message;
 
 /**
  * Created by PhpStorm.
@@ -15,31 +20,28 @@ use Phalcon\Validation\Message;
  * Time: 下午7:14
  * Hope deferred makes the heart sick,but desire fulfilled is a tree of life.
  */
+
 class User extends ModelBase
 {
     use RegVerify;
+
     const ACTIVE = 1;
     const EMAIL_VERIFIED =1;
     const MAN = 1;
     const WOMAN =0 ;
-
+    const DELETED     = '1';
+    const NOT_DELETED = '0';
     /**
      *
-     * @var integer
+     * @var string
      */
-    public $id;
+    public $nickname;
 
     /**
      *
      * @var string
      */
-    public $nickName;
-
-    /**
-     *
-     * @var string
-     */
-    protected $userName;
+    protected $username;
 
     /**
      *
@@ -105,12 +107,13 @@ class User extends ModelBase
     {
         return array(
             'id' => 'id',
-            'nick_name' => 'nickName',
-            'user_name' => 'userName',
+            'nick_name' => 'nickname',
+            'user_name' => 'username',
             'password' => 'password',
             'real_name' => 'realName',
             'mobile_phone' => 'mobilePhone',
             'is_active' => 'isActive',
+            'is_deleted' => 'isDeleted',
             'email' => 'email',
             'sex' => 'sex',
             'is_email_verified' => 'isEmailVerified',
@@ -124,8 +127,8 @@ class User extends ModelBase
 
     public function validation()
     {
-        if ($this->phone) {
-            if(!$this->isMobile($this->phone)){
+        if ($this->mobilePhone) {
+            if(!$this->isMobile($this->mobilePhone)){
                 $message = new Message(
                     '号码格式错误',
                     'mobilePhone',
@@ -148,7 +151,7 @@ class User extends ModelBase
         }
         $validation = new Validation();
         $validation->add(
-            'userName',
+            'username',
             new Validation\Validator\Uniqueness(
                 [
                     'message' => ' username 必须是唯一的',
@@ -168,9 +171,17 @@ class User extends ModelBase
         return $this->validate($validation);
     }
 
-
     public function initialize()
     {
+        $this->addBehavior(
+            new SoftDelete(
+                [
+                    'field' => 'isDeleted',
+                    'value' => User::DELETED,
+                ]
+            )
+        );
+        $this->addBehavior(new Blamable());//操作日志
         $this->hasMany(
             'id', 'App\Models\UserRole', 'userId', array(
             'alias' => 'userRole'
@@ -210,12 +221,20 @@ class User extends ModelBase
      * @param string $name
      * @throws ApiException
      */
-    public function setUserName(string $name)
+    public function setUsername(string $name)
     {
         if(!$this->isUserName($name)){
             throw new ApiException(ErrorCode::DATA_FAILED,'用户名由6-24位字母、数字组成，首位不能是数字');
         }
-        $this->userName = $name;
+        $this->username = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsername(): string
+    {
+        return $this->username;
     }
 
 }

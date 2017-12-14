@@ -4,15 +4,12 @@ namespace App\Models;
 
 use App\Models\Base\ModelBase;
 
-class UserRole extends ModelBase
+class Scope extends ModelBase
 {
-    /**
-     *
-     * @var integer
-     */
-    public $userId;
 
-    public $roleId;
+    public $name;
+
+    public $description;
 
     /**
      * Independent Column Mapping.
@@ -24,8 +21,8 @@ class UserRole extends ModelBase
     {
         return array(
             'id' => 'id',
-            'role_id' => 'roleId',
-            'user_id' => 'userId',
+            'name' => 'name',
+            'description' => 'description',
             'gmt_create' => 'gmtCreate',
             'gmt_modified' => 'gmtModified'
         );
@@ -33,8 +30,7 @@ class UserRole extends ModelBase
 
     public function initialize()
     {
-        $this->belongsTo('roleId', 'App\Models\Role', 'id', array('alias' => 'role'));
-        $this->belongsTo('userId', 'App\Models\User', 'id', array('alias' => 'user'));
+
     }
 
 }

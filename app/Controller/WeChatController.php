@@ -9,7 +9,6 @@
 
 namespace App\Controller;
 
-
 /**
  * Class IndexController
  * @package App\Controller\WeChat
@@ -17,10 +16,17 @@ namespace App\Controller;
  */
 class WeChatController extends ControllerBase
 {
+
     /**
-     * @point(path={"/","/index"},method="get",name="index")
+     * @point(path={"/authenticate/{id:[0-9]+}"},method='get')
      */
-    public function index(){
-        echo 1;
+    public function authenticate($id){
+        $id = $this->filter->sanitize($id,'int');
+        if($id){
+
+        }
     }
+
+
+
 }

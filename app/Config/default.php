@@ -8,7 +8,7 @@
  */
 return [
     'application' => [
-        'title' => 'vhome.api',
+        'title' => 'rest.api',
         'description' => 'RESTful Api,依靠灵活的注解进行配置路由,可自由的添加获取参数进行相应的配置',
         'modelsDir' => APP_PATH . '/Models/',
         'migrationsDir' => APP_PATH . '/Migrations/',

@@ -9,8 +9,10 @@
  */
 namespace App\User;
 
+use App\Component\ApiException;
 use App\Component\Core\ApiPlugin;
-use App\Constants\Acl\Scopes;
+use App\Constants\Acl\UserRoles;
+use App\Constants\ErrorCode;
 use App\Models\User;
 
 /**
@@ -61,16 +63,49 @@ class Service extends ApiPlugin
     {
         /** @var User $userModel */
         $userModel = $this->getDetails();
-        $role = [Scopes::SCOPES_UNAUTHORIZED];
+        $role = [];
         if($userModel && isset($userModel->userRole)){
             $arr = [];
-            $userRoles =  $userModel->userRole;
-            if(count($userRoles)>0){
-                $arr = array_column($userRoles,'role','areasId');
+            foreach ($userModel->userRole as $item){
+                if($item->role){
+                    $arr[] =$item->role->name;
+                }else{
+                    throw new ApiException(ErrorCode::POST_DATA_INVALID,'role data error');
+                }
             }
             $role = array_merge($role,$arr);
         }
-
         return $role;
     }
+
+    public function getScopes(){
+        /** @var User $userModel */
+        $userModel = $this->getDetails();
+        $scopes = [];
+        if($userModel && isset($userModel->userRole)){
+            $arr = [];
+            foreach ($userModel->userRole as $item){
+                if($item->role && $item->role->scope){
+                    $arr[] =$item->role->scope->name;
+                }else{
+                    throw new ApiException(ErrorCode::POST_DATA_INVALID,'scope data error');
+                }
+            }
+            $scopes = array_merge($scopes,$arr);
+        }
+        return $scopes;
+    }
+
+    public function isVip(){
+        return isset($this->getRole()[UserRoles::VIP]) ?? false;
+    }
+
+    public function isAdministrator(){
+        return isset($this->getRole()[UserRoles::ADMINISTRATOR]) ?? false;
+    }
+
+    public function isManager(){
+        return isset($this->getRole()[UserRoles::MANAGER]) ?? false;
+    }
+
 }

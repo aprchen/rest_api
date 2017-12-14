@@ -5,19 +5,18 @@ namespace App\Component\Auth\Account;
 use App\Component\Auth\Manager;
 use App\Models\User;
 
-class EmailAccountType extends BaseAccountType
+class UsernameAccountType extends BaseAccountType
 {
-    const NAME = "email";
+    const NAME = "username";
 
     public function login($data)
     {
-
-        $email = $data[Manager::LOGIN_DATA_USERNAME];
+        $username = $data[Manager::LOGIN_DATA_USERNAME];
         $password = $data[Manager::LOGIN_DATA_PASSWORD];
         /** @var User $user */
         $user = User::findFirst([
-            'conditions' => 'email = :email:',
-            'bind' => ['email' => $email]
+            'conditions' => 'username = :username:',
+            'bind' => ['username' => $username]
         ]);
 
         if (!$user) {

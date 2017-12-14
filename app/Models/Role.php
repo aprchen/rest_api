@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Base\ModelBase;
+
 class Role extends ModelBase
 {
     const ACTIVE = 1;
@@ -12,6 +14,8 @@ class Role extends ModelBase
     public $name;
 
     public $description;
+
+    public $scope_id;
 
     public $isActive;
 
@@ -27,6 +31,7 @@ class Role extends ModelBase
         return array(
             'id' => 'id',
             'name' => 'name',
+            'scope_id' => 'scopeId',
             'description' => 'description',
             'is_active' => 'isActive',
             'gmt_create' => 'gmtCreate',
@@ -40,6 +45,9 @@ class Role extends ModelBase
             'id', 'App\Models\UserRole', 'roleId', array(
             'alias' => 'useRole'
         ));
+        $this->belongsTo(
+            'scopeId','App\Models\Scope','id',['alias'=>'scope']
+        );
     }
 
 }

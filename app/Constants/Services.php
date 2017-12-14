@@ -9,6 +9,9 @@ namespace App\Constants;
  */
 class Services
 {
+
+    const WE_CHAT = 'weChat';// easyWeChat
+
     const CONFIG = 'config';
     const VIEW = 'view';
     const API_SERVICE = 'api';
@@ -50,6 +53,7 @@ class Services
     const ERROR_HELPER = "errorHelper";
     const FORMAT_HELPER = "formatHelper";
 
-
+    const FRACTAL_MANAGER = 'fractalManager';
+    const PHQL_QUERY_PARSER = 'phqlQueryParser';
 
 }

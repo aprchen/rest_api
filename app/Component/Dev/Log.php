@@ -28,7 +28,7 @@ class Log
         return self::$_logger;
     }
 
-    private function makeDir($dir)
+    private static function makeDir($dir)
     {
         if (!file_exists($dir)) {
             if (!mkdir($dir)) {

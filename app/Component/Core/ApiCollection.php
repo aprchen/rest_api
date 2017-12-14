@@ -45,7 +45,7 @@ class ApiCollection extends Collection implements CollectionInterface
 //        if(!isset($this->metadata[PointMap::NAME])){
 //            throw new ApiException(ErrorCode::POST_DATA_INVALID,$this->getControllerName().' group name invalid');
 //        }
-        $this->name = $this->metadata[PointMap::NAME];
+        $this->name = $this->metadata[PointMap::NAME] ?? null;
     }
 
 

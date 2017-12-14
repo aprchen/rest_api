@@ -14,6 +14,7 @@ use App\Component\Http\FormatHelper;
 use App\Component\Http\Request;
 use App\Component\Http\Response;
 use App\Constants\Services;
+use App\Fractal\Query\QueryParsers\PhqlQueryParser;
 use Phalcon\Di\FactoryDefault;
 
 class ApiFactory extends FactoryDefault
@@ -25,6 +26,7 @@ class ApiFactory extends FactoryDefault
         $this->setShared(Services::RESPONSE, new Response);
         $this->setShared(Services::FORMAT_HELPER, new FormatHelper);
         $this->setShared(Services::ERROR_HELPER, new ErrorHelper);
+        $this->setShared(Services::PHQL_QUERY_PARSER, new PhqlQueryParser);
     }
 
 }

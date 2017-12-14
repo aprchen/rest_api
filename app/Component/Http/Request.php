@@ -162,4 +162,18 @@ class Request extends \Phalcon\Http\Request
 
         return preg_replace('/.*\s/', '', $string);
     }
+
+
+    public function getCallbackUrl(){
+
+    }
+
+    public function getClientID(){
+
+    }
+
+    public function getClientSecret(){
+
+    }
+
 }

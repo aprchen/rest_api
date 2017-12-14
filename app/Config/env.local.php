@@ -6,7 +6,7 @@ return [
         'host'       => 'localhost',
         'username'   => 'root',
         'password'   => '123456789',
-        'port'       => '3306',
+        'port'       => '8889',
         'prefix'     => 'sl',
         'dbname'     => 'qy_api',
         'charset'    => 'utf8',
@@ -14,6 +14,12 @@ return [
     'redis'=>[
         "host" => '127.0.0.1',
         "port" => 6379,
-        "auth" => ""
+        "auth" => "",
+        'statsKey'=>'_PHCR' //_PHCR
+    ],
+    'modelsCache'=>[
+        'lifetime'=>[
+            'frontendData'=>86400 //一天
+        ]
     ]
 ];

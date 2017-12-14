@@ -20,8 +20,9 @@ class AuthTokenMiddleware extends ApiPlugin implements MiddlewareInterface
     {
         $token = $this->request->getToken();
         if ($token) {
-            $this->authManager->authenticateToken($token);
+            return $this->authManager->authenticateToken($token);
         }
+        return false;
     }
 
     /**

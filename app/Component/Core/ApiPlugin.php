@@ -15,7 +15,10 @@ use App\Component\Auth\TokenParsers\JWTTokenParser;
 use App\Component\Http\Request;
 use App\Component\Http\Response;
 
+use App\Fractal\Query\QueryParsers\PhqlQueryParser;
+use App\Fractal\Query\QueryParsers\UrlQueryParser;
 use App\User\Service;
+use Phalcon\Cache\Backend\Redis;
 use Phalcon\Config;
 use Phalcon\Mvc\User\Plugin;
 
@@ -30,7 +33,9 @@ use Phalcon\Mvc\User\Plugin;
  * @property Manager $authManager
  * @property Config $config
  * @property Service $userService
- *
+ * @property phqlQueryParser $phqlQueryParser
+ * @property urlQueryParser $urlQueryParser
+ * @property Redis $redis
  *
  * di注册提示用
  */
